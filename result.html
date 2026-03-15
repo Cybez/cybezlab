@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result - Cyber Security Certificate</title>
-    <!--<< Bootstrap min.css >>-->
+    <title>Cyber Intelligence Test - Result</title>
+    <!-- Bootstrap min.css -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <!--<< All Min Css >>-->
+    <!-- All Min Css -->
     <link rel="stylesheet" href="assets/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
@@ -17,13 +17,13 @@
         :root {
             --neon-blue: #00f2fe;
             --neon-green: #4facfe;
-            --cyber-danger: #ff0055;
-            --bg-glass: rgba(10, 20, 38, 0.7);
+            --cyber-dark: #030a16;
+            --bg-glass: rgba(13, 25, 43, 0.85);
             --border-glass: rgba(0, 242, 254, 0.3);
         }
 
         body {
-            background-color: #030a16;
+            background-color: var(--cyber-dark);
             font-family: 'Rajdhani', sans-serif;
             color: #ffffff;
             margin: 0;
@@ -31,410 +31,242 @@
             position: relative;
         }
 
-        /* Matrix Background Canvas */
-        canvas#matrix {
+        /* Digital Grid Background */
+        body::before {
+            content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
             z-index: -1;
-            opacity: 0.15;
+            pointer-events: none;
         }
 
         .container {
-            position: relative;
-            z-index: 1;
-            padding-top: 50px;
-            padding-bottom: 50px;
+            padding-top: 60px;
+            padding-bottom: 60px;
         }
 
-        /* Glassmorphism Profile Card */
+        /* Profile Card */
         .cyber-card {
             background: var(--bg-glass);
             border: 1px solid var(--border-glass);
-            border-radius: 15px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
-            margin-bottom: 40px;
+            border-radius: 12px;
+            padding: 35px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.2);
+            margin-bottom: 30px;
             position: relative;
-            overflow: hidden;
-        }
-
-        .cyber-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 242, 254, 0.1), transparent);
-            transform: rotate(45deg);
-            animation: glowSweep 3s infinite linear;
-        }
-
-        @keyframes glowSweep {
-            0% { left: -100%; }
-            100% { left: 100%; }
         }
 
         .profile-avatar {
-            width: 100px;
-            height: 100px;
+            width: 90px; height: 90px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            font-weight: bold;
-            color: #fff;
-            margin: 0 auto 20px;
-            box-shadow: 0 0 15px var(--neon-blue);
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-green));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px; font-weight: bold; color: #fff;
+            margin: 0 auto 15px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
             font-family: 'Orbitron', sans-serif;
         }
 
         .profile-title {
             font-family: 'Orbitron', sans-serif;
-            text-align: center;
+            text-align: center; color: var(--neon-blue);
+            font-size: 22px; margin-bottom: 5px;
+        }
+
+        .cyber-badge {
+            display: table; margin: 0 auto 20px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 24px;
-            margin-bottom: 10px;
+            padding: 5px 15px; border-radius: 20px;
+            font-size: 13px; font-weight: bold;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 12px; margin-top: 15px;
         }
 
         .info-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 3px solid var(--neon-blue);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px; border-radius: 6px;
+            border-left: 2px solid var(--neon-blue);
         }
 
-        .info-label {
-            font-size: 13px;
-            color: #8fa1bc;
-            text-transform: uppercase;
-        }
+        .info-label { font-size: 12px; color: #8fa1bc; }
+        .info-value { font-weight: 700; font-size: 16px; color: #fff; }
 
-        .info-value {
-            font-weight: 700;
-            font-size: 18px;
-            color: #fff;
-        }
-
-        /* Certificate Widget */
+        /* Certificate Section */
         .cert-container {
-            background: radial-gradient(circle at center, rgba(16, 32, 54, 0.9), rgba(5, 12, 24, 0.95));
-            border: 2px solid #00f2fe;
-            border-radius: 12px;
-            padding: 40px;
+            background: radial-gradient(circle at center, rgba(16, 32, 54, 0.95), rgba(5, 12, 24, 0.98));
+            border: 2px solid #00f2fe; border-radius: 8px;
+            padding: 30px; position: relative;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
             text-align: center;
-            position: relative;
-            box-shadow: 0 0 35px rgba(0, 242, 254, 0.2);
-            font-family: 'Rajdhani', sans-serif;
         }
 
         .cert-frame {
-            border: 1px dashed rgba(0, 242, 254, 0.4);
-            padding: 30px;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .cert-watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 180px;
-            color: rgba(0, 242, 254, 0.03);
-            z-index: 0;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            padding: 25px; border-radius: 6px; position: relative;
         }
 
         .cert-header {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 28px;
-            color: var(--neon-blue);
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 5px;
-        }
-
-        .cert-subtitle {
-            color: #8fa1bc;
-            font-size: 14px;
-            margin-bottom: 25px;
-            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif; font-size: 24px;
+            color: var(--neon-blue); text-transform: uppercase;
+            letter-spacing: 3px; margin-bottom: 5px;
         }
 
         .cert-name {
-            font-size: 38px;
-            font-weight: 700;
-            margin: 15px 0;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            font-size: 32px; font-weight: 700; margin: 15px 0;
+            color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+            font-family: 'Orbitron', sans-serif;
         }
 
-        .cert-statement {
-            color: #aebccf;
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .cert-stats {
+            display: flex; justify-content: space-around;
+            margin: 20px 0; padding: 10px;
+            background: rgba(255,255,255,0.02); border-radius: 5px;
         }
 
-        .cert-score {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--neon-green);
-            margin: 10px 0;
+        .stat-box { text-align: center; }
+        .stat-val { font-size: 18px; font-weight: bold; color: var(--neon-green); }
+        .stat-lab { font-size: 12px; color: #8fa1bc; }
+
+        .cert-issued { font-size: 13px; color: #8fa1bc; margin-top: 15px; }
+
+        .download-btn {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+            border: none; color: #030a16; width: 100%;
+            padding: 14px; margin-top: 20px; font-weight: bold;
+            border-radius: 4px; text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif; cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .cert-rank {
-            display: inline-block;
-            background: linear-gradient(90deg, #ff0055, #ff5000);
-            color: #fff;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-top: 15px;
-            box-shadow: 0 4px 10px rgba(255, 0, 85, 0.3);
-        }
-
-        .office-note {
-            margin-top: 25px;
-            color: #ff9800;
-            font-weight: bold;
-            font-style: italic;
+        .download-btn:hover {
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+            transform: translateY(-2px);
         }
 
         /* Modal popup */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 999;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-content-cyber {
-            background: rgba(13, 25, 43, 0.95);
-            border: 2px solid var(--neon-blue);
-            padding: 35px;
-            border-radius: 12px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
-            transform: scale(0.9);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(13, 25, 43, 0.98); border: 1px solid var(--neon-blue);
+            padding: 30px; border-radius: 8px; max-width: 480px; width: 90%;
+            text-align: center; box-shadow: 0 0 35px rgba(0, 242, 254, 0.5);
+            transform: scale(0.9); transition: transform 0.4s ease;
         }
 
-        .modal-overlay.active .modal-content-cyber {
-            transform: scale(1);
-        }
+        .modal-overlay.active .modal-content-cyber { transform: scale(1); }
 
-        .modal-icon {
-            font-size: 50px;
-            color: #00f2fe;
-            margin-bottom: 15px;
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        .modal-button {
-            background: var(--neon-blue);
-            color: #030a16;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
-        }
-
-        .modal-button:hover {
-            background: #fff;
-            box-shadow: 0 0 20px rgba(255,255,255,0.7);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px; right: 20px;
-            background: none; border: none;
-            color: rgba(255,255,255,0.6);
-            font-size: 20px;
-            cursor: pointer;
+        .modal-btn {
+            background: var(--neon-blue); color: #030a16; border: none;
+            padding: 12px 25px; border-radius: 4px; font-weight: bold;
+            text-transform: uppercase; cursor: pointer; margin-top: 20px;
+            font-family: 'Orbitron', sans-serif;
         }
     </style>
 </head>
 <body>
 
-    <!-- Matrix rain canvas backdrop -->
-    <canvas id="matrix"></canvas>
-
     <div class="container">
         <div class="row justify-content-center">
             
-            <!-- Profile Card -->
+            <!-- Left: Profile Index -->
             <div class="col-md-5">
                 <div class="cyber-card">
                     <div class="profile-avatar">MZ</div>
-                    <h2 class="profile-title">M Zaeem</h2>
-                    <p class="text-center" style="color:#00f2fe;">Cyber Operator // Verified</p>
+                    <h2 class="profile-title">M Zaeem Ahmad</h2>
+                    <div class="cyber-badge">🏆 1st Position – Cyber Intelligence Test</div>
+
                     <div class="info-grid">
-                        <div class="info-item">
-                            <div class="info-label">Gender</div>
-                            <div class="info-value">Male</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Age</div>
-                            <div class="info-value">22</div>
-                        </div>
-                        <div class="info-item" style="grid-column: span 2;">
-                            <div class="info-label">Applied Test</div>
-                            <div class="info-value">Cyber Intelligence Test</div>
-                        </div>
+                        <div class="info-item"><div class="info-label">Gender</div><div class="info-value">Male</div></div>
+                        <div class="info-item"><div class="info-label">Age</div><div class="info-value">22</div></div>
                     </div>
+
                     <div class="mt-4">
-                        <h4 style="font-size:16px; color:#00f2fe;">ABOUT THE TEST</h4>
-                        <p style="font-size:14px; color:#aebccf; line-height:1.5;">
-                            The Cyber Intelligence Test evaluates critical skills in network exploitation, threat hunting, vulnerability assessments, and advanced cryptoanalysis securely.
+                        <h4 style="font-size:14px; color:var(--neon-blue); font-family:'Orbitron';">Basic Information</h4>
+                        <p style="font-size:14px; color:#aebccf; line-height:1.6;">
+                            A passionate cybersecurity learner who successfully completed the Cyber Intelligence Test and demonstrated strong analytical and security awareness skills.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Certificate Section -->
+            <!-- Right: Certificate Interface -->
             <div class="col-md-7">
                 <div class="cert-container">
-                    <div class="cert-watermark"><i class="fa-solid fa-shield-halved"></i></div>
                     <div class="cert-frame">
                         <div class="cert-header">CERTIFICATE OF EXCELLENCE</div>
-                        <div class="cert-subtitle">AWARDED TO SECURE OPERATIVE</div>
                         
                         <div class="cert-name">ZAEEM AHMAD</div>
                         
-                        <div class="cert-statement">
-                            This documents confirms top-ranked proficiency and mastery in subverting tactical vectors within the **Cyber Intelligence Protocol Matrix**.
+                        <p style="color:#aebccf; font-size:14px;">has demonstrated top-level proficiency framing the Cybersecurity matrix framework independently and effectively.</p>
+
+                        <div class="cert-stats">
+                            <div class="stat-box"><div class="stat-val">90%</div><div class="stat-lab">Test Score</div></div>
+                            <div class="stat-box"><div class="stat-val">1st</div><div class="stat-lab">Placement</div></div>
+                            <div class="stat-box"><div class="stat-val">500</div><div class="stat-lab">Participants</div></div>
                         </div>
 
-                        <div class="cert-score">SCORE: 90% SECURED</div>
-
-                        <div class="cert-rank">
-                            <i class="fa-solid fa-trophy mr-2"></i> 1ST POSITION (G-Rank 500)
-                        </div>
-
-                        <div class="office-note">
-                            <i class="fa-solid fa-map-pin"></i> Please collect your certificate hardcopy from our principal office.
-                        </div>
+                        <div class="cert-issued">Issued By: <b>Cybez Labs</b></div>
+                        <p style="color:#ff9800; font-size:13px; font-weight:600; margin-top:15px; letter-spacing:0.5px;"><i class="fa-solid fa-map-pin mr-1"></i> Please collect your certificate from our office.</p>
                     </div>
+                    <button class="download-btn" onclick="confettiBurst()"><i class="fa fa-download mr-1"></i> Download Certificate</button>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Modals Layout -->
+    <!-- Popup Dialog -->
     <div class="modal-overlay" id="congratsModal">
         <div class="modal-content-cyber">
-            <button class="close-btn" onclick="closeModal()"><i class="fa fa-times"></i></button>
-            <div class="modal-icon"><i class="fa-solid fa-champagne-glasses"></i></div>
-            <h3 style="font-family: 'Orbitron'; font-size: 22px;">CONGRATULATIONS!</h3>
-            <p style="text-align:justify; margin: 15px 0 20px; line-height: 1.6; color: #d0e0f2;">
-                Congratulations 🎊 <b>Zaeem Ahmad</b>!<br><br>
-                You have scored 90% marks in the Cyber Intelligence Test and secured 1st position among 500 students.<br><br>
-                We wish you continued success and a prosperous future in the field of cybersecurity. Good luck with your future endeavors!
+            <div style="font-size:40px; color:var(--neon-blue); margin-bottom:10px;"><i class="fa-solid fa-award"></i></div>
+            <h3 style="font-family:'Orbitron'; color:var(--neon-blue); margin-bottom:15px;">CONGRATULATIONS 🎊</h3>
+            <p style="text-align:justify; color:#d0e0f2; font-size:15px; line-height:1.6;">
+                Congratulations 🎊 <b>Zaeem Ahmad</b>! <br><br>
+                You have scored **90% marks** in the **Cyber Intelligence Test** and secured **1st position among 500 students**.<br><br>
+                Click the link below to **download your certificate**.<br><br>
+                We wish you continued success and a prosperous future in the field of **Cybersecurity**. Good luck with your future endeavors!
             </p>
-            <button class="modal-button" onclick="closeModal()">Claim Dashboard Access</button>
+            <button class="modal-btn" onclick="closeModal()">Access Portal</button>
         </div>
     </div>
 
     <script>
-        // Matrix Rain digital logic
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$@#%&*+=-_^{}";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(3, 10, 22, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#0f0';
-            ctx.font = fontSize + 'px monospace';
-
-            for(let i = 0; i < drops.length; i++) {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                ctx.fillStyle = Math.random() > 0.6 ? '#00f2fe' : '#4facfe'; // Cyan / blue mix
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
+        function confettiBurst() {
+            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#00f2fe', '#4facfe', '#ffffff'] });
         }
-        setInterval(drawMatrix, 40);
 
-        // Window resize
-        window.addEventListener('resize', () => {
-             canvas.width = window.innerWidth;
-             canvas.height = window.innerHeight;
-        });
-
-        // Trigger Modal Action and Confetti
         window.onload = function() {
             document.getElementById('congratsModal').classList.add('active');
-            
-            // Trigger 3 bursts of confetti
-            var duration = 3000;
-            var end = Date.now() + duration;
-
+            var end = Date.now() + 2000;
             (function frame() {
-              confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors: ['#00f2fe', '#4facfe', '#ffffff'] });
-              confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: ['#00f2fe', '#4facfe', '#ffffff'] });
-
-              if (Date.now() < end) {
-                requestAnimationFrame(frame);
-              }
+              confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors: ['#00f2fe', '#4facfe'] });
+              confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: ['#00f2fe', '#4facfe'] });
+              if (Date.now() < end) requestAnimationFrame(frame);
             }());
         };
 
         function closeModal() {
             document.getElementById('congratsModal').classList.remove('active');
-            // Trigger local small burst
-            confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+            confettiBurst();
         }
     </script>
 

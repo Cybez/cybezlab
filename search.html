@@ -4,100 +4,145 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Cybezlab - Digital Marketing Agency Html Template">
-    <title>Verify Certificate - Cybezlab</title>
+    <title>Result Portal - Cyber Intelligence Test</title>
     <!-- Favcion -->
     <link rel="shortcut icon" href="assets/img/favicon.svg">
     <!-- Bootstrap min.css -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <!-- All Min Css -->
     <link rel="stylesheet" href="assets/css/all.min.css">
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="assets/css/animate.css">
-    <!-- Icomoon.css -->
-    <link rel="stylesheet" href="assets/css/icomoon.css">
-    <!-- Magnific Popup.css -->
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <!-- Nice Select.css -->
-    <link rel="stylesheet" href="assets/css/nice-select.css">
     <!-- Main.css -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/color.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --neon-blue: #00f2fe;
+            --neon-green: #4facfe;
+            --cyber-dark: #030a16;
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            font-family: 'Rajdhani', sans-serif;
+            color: #ffffff;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Digital Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         .search-hero {
-            background: linear-gradient(rgba(3, 10, 22, 0.85), rgba(3, 10, 22, 0.85)), url('assets/img/hero/hero-bg-3.jpg');
-            background-size: cover;
-            background-position: center;
-            min-height: calc(100vh - 100px);
+            min-height: calc(100vh - 90px);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             padding: 20px;
+            position: relative;
+        }
+
+        /* Hexagon / Circuit decorative overlay */
+        .cyber-bg-icon {
+            position: absolute;
+            font-size: 300px;
+            color: rgba(0, 242, 254, 0.02);
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .search-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #ffffff;
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+            text-align: center;
         }
 
         .search-container {
             width: 100%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 242, 254, 0.2);
-            border-radius: 30px;
-            padding: 8px;
+            max-width: 550px;
+            background: rgba(13, 25, 43, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 4px; /* Industrial style */
+            padding: 10px;
             display: flex;
             align-items: center;
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.1);
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.15);
             transition: all 0.3s ease;
+            position: relative;
         }
 
-        .search-container:focus-within {
-            border-color: #00f2fe;
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.25);
+        .search-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--neon-blue);
         }
 
         .search-container input {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 12px 20px;
+            padding: 15px 18px;
             color: #ffffff;
             font-size: 16px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
             outline: none;
         }
 
         .search-container input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(143, 161, 188, 0.6);
+            letter-spacing: 1px;
         }
 
         .search-btn {
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
             border: none;
             color: #030a16;
-            padding: 12px 28px;
-            border-radius: 25px;
-            font-weight: bold;
+            padding: 14px 30px;
+            font-weight: 700;
             text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            border-radius: 2px;
         }
 
         .search-btn:hover {
-            transform: scale(1.03);
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+            transform: translateY(-1px);
         }
 
-        .search-title {
-            color: #ffffff;
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #fff, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
+        #errorMsg {
+            color: #ff0055;
+            margin-top: 20px;
+            font-weight: bold;
+            display: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -115,17 +160,12 @@
                     </div>
                     <div class="mean__menu-wrapper">
                         <div class="main-menu">
-                            <!-- Match identical navbar with comment items -->
                             <nav id="mobile-menu">
                                 <ul>
-                                    <li class="has-dropdown active menu-thumb">
-                                        <a href="index.html">Home</a>
-                                        <ul class="submenu has-homemenu">
-                                            <li><div class="homemenu-items"><div class="homemenu"><div class="homemenu-thumb"><img src="assets/img/header/home-1.jpg" alt="img"><div class="demo-button"><a href="index.html" class="theme-btn">Multi Page</a></div></div></div></div></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="about.html">About</a></li>
+                                    <li class="active"><a href="search.html" style="color: #00f2fe;">Results</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -140,16 +180,17 @@
         </div>
     </header>
 
-    <!-- Search Hero -->
+    <!-- Search Section -->
     <section class="search-hero">
-        <h1 class="search-title">Verify Cyber Certificate</h1>
-        <p style="color: #aebccf; margin-bottom: 30px; text-align:center; max-width: 500px;">Enter your unique Verification ID code below to securely retrieve credential metadata records.</p>
+        <div class="cyber-bg-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        
+        <h1 class="search-title">Cyber Intelligence Test Result Portal</h1>
         
         <div class="search-container">
-            <input type="text" id="certInput" placeholder="Enter Reference Code (Try: 926286)">
-            <button class="search-btn" onclick="verifyCert()">ACCESS</button>
+            <input type="text" id="certInput" placeholder="Enter your Roll Number (e.g., 926286)">
+            <button class="search-btn" onclick="verifyCert()">Search</button>
         </div>
-        <p id="errorMsg" style="color:#ff0055; margin-top:15px; display:none;">Error: Certificate record index not found.</p>
+        <p id="errorMsg"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ACCESS DENIED: ROLL NUMBER NOT REGISTERED.</p>
     </section>
 
     <script>
@@ -163,7 +204,6 @@
             }
         }
 
-        // Trigger on Enter
         document.getElementById('certInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 verifyCert();
