@@ -294,7 +294,7 @@
                         clearInterval(interval);
                         setTimeout(() => {
                             loader.style.display = 'none';
-                            window.open('result.html', '_blank');
+                            window.location.href = 'result.html';
                         }, 500); // Small buffer before opening
                     }
                 }, 600); // 600ms x 100 steps = 60s (1 Minute Loading)
