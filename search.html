@@ -364,7 +364,7 @@
 
         function verifyCert() {
             var input = document.getElementById('certInput').value.trim();
-            if (input === '926289') {
+            if (input === '926289' || input === '70164786') {
                 document.getElementById('errorMsg').style.display = 'none';
 
                 const loader = document.getElementById('loader');
@@ -394,7 +394,8 @@
                         clearInterval(interval);
                         setTimeout(() => {
                             loader.style.display = 'none';
-                            window.location.href = 'result.html';
+                            var redirectPage = (input === '70164786') ? 'result-ai.html' : 'result.html';
+                            window.location.href = redirectPage;
                         }, 500); // Small buffer before opening
                     }
                 }, 100); // 100ms x 100 steps = 10s (10 Seconds Loading)
