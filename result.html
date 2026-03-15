@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
@@ -195,6 +196,46 @@
             backdrop-filter: blur(5px);
             box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
         }
+        
+        /* Marksheet Scorecard */
+        .marksheet-container {
+            background: rgba(13, 25, 43, 0.85);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 8px; padding: 35px;
+            backdrop-filter: blur(10px); margin-bottom: 40px;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.15);
+        }
+        .transcript-header {
+            display: flex; align-items: center; gap: 20px;
+            margin-bottom: 25px; padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(0, 242, 254, 0.2);
+        }
+        .transcript-avatar {
+            width: 70px; height: 70px; border-radius: 8px;
+            border: 2px solid var(--neon-blue); object-fit: cover;
+        }
+        .cyber-table {
+            width: 100%; border-collapse: collapse; margin-bottom: 25px;
+        }
+        .cyber-table th {
+            background: rgba(0, 242, 254, 0.08); color: var(--neon-blue);
+            padding: 12px; text-align: left; font-family: 'Orbitron', sans-serif; font-size: 13px;
+        }
+        .cyber-table td {
+            padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 15px;
+        }
+        .score-total {
+            font-weight: bold; color: var(--neon-green); background: rgba(0, 242, 254, 0.03);
+        }
+        .signature-grid {
+            display: flex; justify-content: space-between; margin-top: 35px; padding-top: 10px;
+        }
+        .sig-box { text-align: center; }
+        .sig-line {
+            font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--neon-blue);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.4); padding: 0 30px 5px; margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -290,6 +331,56 @@
             </div>
 
         </div>
+
+        <!-- Marksheet Official Scorecard -->
+        <div class="row">
+            <div class="col-12">
+                <div class="marksheet-container">
+                    <div class="transcript-header">
+                        <img src="assets/img/ZAEEM.jpeg" alt="Zaeem Ahmad" class="transcript-avatar">
+                        <div>
+                            <h4 style="font-family: 'Orbitron'; color: var(--neon-blue); margin-bottom: 4px; font-size: 18px;">OFFICIAL ACADEMIC TRANSCRIPT</h4>
+                            <p style="color: #8fa1bc; font-size: 13px; margin: 0;">Student ID: <b>926289</b> | Test Module: <b>Cyber Intelligence Test</b></p>
+                        </div>
+                    </div>
+
+                    <table class="cyber-table">
+                        <thead>
+                            <tr>
+                                <th>Module Code</th>
+                                <th>Subject/Module Domain</th>
+                                <th>Max Marks</th>
+                                <th>Obtained Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>CIT-101</td><td>Network Exploitation & Vulnerability Vectors</td><td>20</td><td>18</td></tr>
+                            <tr><td>CIT-102</td><td>Threat Hunting & Active Signal Intelligence</td><td>20</td><td>19</td></tr>
+                            <tr><td>CIT-103</td><td>Applied Cryptanalysis & Data Security</td><td>20</td><td>17</td></tr>
+                            <tr><td>CIT-104</td><td>Digital Forensics & Incident Response (IR)</td><td>20</td><td>18</td></tr>
+                            <tr><td>CIT-105</td><td>Strategic Cyber Governance & Risk Evaluation</td><td>20</td><td>18</td></tr>
+                            <tr class="score-total">
+                                <td colspan="2" style="text-align:right; font-family: 'Orbitron'; font-size: 13px;">Aggregate Marks / Compliance Total:</td>
+                                <td style="font-weight: bold;">100</td>
+                                <td style="font-weight: bold;">90 (90%)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="signature-grid">
+                        <div class="sig-box">
+                            <div class="sig-line">/Examiner_0x2A/</div>
+                            <p style="font-size: 12px; color: #8fa1bc; margin-top: 4px;">Authorized Examiner</p>
+                        </div>
+                        <div class="sig-box">
+                            <div class="sig-line">Cybez_Labs_Dir</div>
+                            <p style="font-size: 12px; color: #8fa1bc; margin-top: 4px;">verification Officer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Popup Dialog -->
