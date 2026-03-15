@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cybezlab - Digital Marketing Agency Html Template">
+    <title>Verify Certificate - Cybezlab</title>
+    <!-- Favcion -->
+    <link rel="shortcut icon" href="assets/img/favicon.svg">
+    <!-- Bootstrap min.css -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- All Min Css -->
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <!-- Icomoon.css -->
+    <link rel="stylesheet" href="assets/css/icomoon.css">
+    <!-- Magnific Popup.css -->
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <!-- Nice Select.css -->
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <!-- Main.css -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/color.css">
+
+    <style>
+        .search-hero {
+            background: linear-gradient(rgba(3, 10, 22, 0.85), rgba(3, 10, 22, 0.85)), url('assets/img/hero/hero-bg-3.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: calc(100vh - 100px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 30px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-container:focus-within {
+            border-color: #00f2fe;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.25);
+        }
+
+        .search-container input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            border: none;
+            color: #030a16;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.03);
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .search-title {
+            color: #ffffff;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section Start -->
+    <header id="header-sticky" class="header-1 style-2">
+        <div class="container-fluid">
+            <div class="mega-menu-wrapper">
+                <div class="header-main">
+                    <div class="logo">
+                        <a href="index.html" class="header-logo-3">
+                            <img src="assets/img/logo/black-logo.svg" alt="logo-img">
+                        </a>
+                    </div>
+                    <div class="mean__menu-wrapper">
+                        <div class="main-menu">
+                            <!-- Match identical navbar with comment items -->
+                            <nav id="mobile-menu">
+                                <ul>
+                                    <li class="has-dropdown active menu-thumb">
+                                        <a href="index.html">Home</a>
+                                        <ul class="submenu has-homemenu">
+                                            <li><div class="homemenu-items"><div class="homemenu"><div class="homemenu-thumb"><img src="assets/img/header/home-1.jpg" alt="img"><div class="demo-button"><a href="index.html" class="theme-btn">Multi Page</a></div></div></div></div></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="header-right d-flex justify-content-end align-items-center">
+                        <div class="main-button">
+                            <a href="contact.html"> <span class="theme-btn"> Get Started </span><span class="arrow-btn"><i class="fa-regular fa-arrow-up-right"></i></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Hero -->
+    <section class="search-hero">
+        <h1 class="search-title">Verify Cyber Certificate</h1>
+        <p style="color: #aebccf; margin-bottom: 30px; text-align:center; max-width: 500px;">Enter your unique Verification ID code below to securely retrieve credential metadata records.</p>
+        
+        <div class="search-container">
+            <input type="text" id="certInput" placeholder="Enter Reference Code (Try: 926286)">
+            <button class="search-btn" onclick="verifyCert()">ACCESS</button>
+        </div>
+        <p id="errorMsg" style="color:#ff0055; margin-top:15px; display:none;">Error: Certificate record index not found.</p>
+    </section>
+
+    <script>
+        function verifyCert() {
+            var input = document.getElementById('certInput').value.trim();
+            if (input === '926286') {
+                document.getElementById('errorMsg').style.display = 'none';
+                window.open('result.html', '_blank');
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        // Trigger on Enter
+        document.getElementById('certInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyCert();
+            }
+        });
+    </script>
+
+</body>
+</html>
