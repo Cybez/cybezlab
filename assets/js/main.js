@@ -1,10 +1,10 @@
 /*-----------------------------------------------------------------
 
-Template Name: Digtek - Digital Marketing Agency Html Template
+Template Name: Cybezlab - Digital Marketing Agency Html Template
 Author:  Gramentheme
 Author URI: https://themeforest.net/user/Gramentheme/portfolio
 Version: 1.0.0
-Description: Digtek - Digital Marketing Agency Html Template<
+Description: Cybezlab - Digital Marketing Agency Html Template<
 
 -------------------------------------------------------------------
 CSS TABLE OF CONTENTS
