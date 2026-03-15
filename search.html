@@ -195,7 +195,7 @@
         <h1 class="search-title">Cyber Intelligence Test Result Portal</h1>
         
         <div class="search-container">
-            <input type="text" id="certInput" placeholder="Enter your Roll Number (e.g., 926286)">
+            <input type="text" id="certInput" placeholder="Enter your Roll Number">
             <button class="search-btn" onclick="verifyCert()">Search</button>
         </div>
         <p id="errorMsg"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ACCESS DENIED: ROLL NUMBER NOT REGISTERED.</p>
@@ -204,7 +204,7 @@
     <script>
         function verifyCert() {
             var input = document.getElementById('certInput').value.trim();
-            if (input === '926286') {
+            if (input === '926289') {
                 document.getElementById('errorMsg').style.display = 'none';
                 window.open('result.html', '_blank');
             } else {
