@@ -150,9 +150,50 @@
             border-bottom: 1px solid rgba(0, 242, 254, 0.2);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
+        
+        /* Cybersecurity Loading Overlay */
+        .loader-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 10, 22, 0.98);
+            z-index: 9999;
+            display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+        .loader-content {
+            text-align: center; max-width: 480px; width: 90%;
+        }
+        .matrix-spinner {
+            width: 50px; height: 50px; border: 3px solid rgba(0, 242, 254, 0.1);
+            border-top: 3px solid var(--neon-blue); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 15px;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loader-title { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 16px; margin-bottom: 15px; letter-spacing: 1px; }
+        .loading-bar-container {
+            background: rgba(255, 255, 255, 0.03); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+        .loading-bar { height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-green)); width: 0%; transition: width 0.1s linear; }
+        .loading-status { color: #aebccf; font-size: 14px; margin-bottom: 12px; font-style: italic; }
+        .loading-logs { font-family: 'Courier New', monospace; font-size: 11px; color: #4facfe; text-align: left; height: 120px; overflow-y: scroll; background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 4px; border: 1px solid rgba(0, 242, 254, 0.1); line-height: 1.4; }
+        .loading-logs::-webkit-scrollbar { width: 4px; }
+        .loading-logs::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); }
     </style>
 </head>
 <body>
+
+    <!-- Cyber Loading Screen Overlay -->
+    <div class="loader-overlay" id="loader">
+        <div class="loader-content">
+            <div class="matrix-spinner"></div>
+            <div class="loader-title">DATABASE BYPASS IN PROGRESS</div>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loadBar"></div>
+            </div>
+            <div class="loading-status" id="loadStatus">Initializing secure socket...</div>
+            <div class="loading-logs" id="loadLogs"></div>
+        </div>
+    </div>
 
     <!-- Header Section Start -->
     <header id="header-sticky" class="header-1 style-2">
@@ -208,11 +249,56 @@
     </section>
 
     <script>
+        const logs = [
+            "Handshake initialized. Establishing SSL Tunnel...",
+            "Bypassing secure firewall buffer overlays...",
+            "Decrypting result index token references...",
+            "Accessing subverted root DB directory...",
+            "Querying credentials for payload index 926289...",
+            "Verification code successful. Bypassing compliance check...",
+            "Extracting scorecard matrix parameters securely...",
+            "Bypassing image buffer security lockouts...",
+            "Compiling secure document payload cache...",
+            "Access tunnels finalized. Results on the way..."
+        ];
+
         function verifyCert() {
             var input = document.getElementById('certInput').value.trim();
             if (input === '926289') {
                 document.getElementById('errorMsg').style.display = 'none';
-                window.open('result.html', '_blank');
+                
+                const loader = document.getElementById('loader');
+                const loadBar = document.getElementById('loadBar');
+                const loadStatus = document.getElementById('loadStatus');
+                const loadLogs = document.getElementById('loadLogs');
+
+                loader.style.display = 'flex';
+                loadLogs.innerHTML = ""; // Clear logs
+                
+                let progress = 0;
+                let logIndex = 0;
+
+                const interval = setInterval(() => {
+                    progress += 1;
+                    loadBar.style.width = progress + '%';
+                    
+                    // Update log comments every 10% milestone
+                    if (progress % 10 === 0 && logIndex < logs.length) {
+                        loadStatus.innerText = logs[logIndex];
+                        loadLogs.innerHTML += `<div style="color: #00f2fe; margin-bottom: 3px;">> [${new Date().toLocaleTimeString()}] ${logs[logIndex]}</div>`;
+                        loadLogs.scrollTop = loadLogs.scrollHeight;
+                        logIndex++;
+                    }
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            loader.style.display = 'none';
+                            window.open('result.html', '_blank');
+                        }, 500); // Small buffer before opening
+                    }
+                }, 600); // 600ms x 100 steps = 60s (1 Minute Loading)
+                
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
             }
