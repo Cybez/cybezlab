@@ -186,6 +186,15 @@
             border-bottom: 1px solid rgba(0, 242, 254, 0.2);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
+        .alert-cyber {
+            background: rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-left: 4px solid var(--neon-blue);
+            padding: 20px; border-radius: 6px;
+            display: flex; align-items: center; gap: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -223,12 +232,23 @@
     </header>
 
     <div class="container">
+        
+        <!-- Persistent Congratulatory Alert -->
+        <div class="alert-cyber mb-4">
+            <div style="font-size: 28px; color: var(--neon-blue);"><i class="fa-solid fa-circle-check"></i></div>
+            <div style="font-size: 15px; color: #d0e0f2; line-height: 1.6;">
+                Congratulations 🎊 <b>Zaeem Ahmad!</b> You have scored <b>90% marks</b> in the Cyber Intelligence Test and secured <b>1st position among 500 students.</b><br> Click the link below to download your certificate. We wish you continued success and a prosperous future in the field of cybersecurity. Good luck with your future endeavors!
+            </div>
+        </div>
+
         <div class="row justify-content-center">
             
             <!-- Left: Profile Index -->
             <div class="col-md-5">
                 <div class="cyber-card">
-                    <div class="profile-avatar">MZ</div>
+                    <div class="profile-avatar" style="overflow: hidden; padding: 0; background: none;">
+                        <img src="assets/img/ZAEEM.jpeg" alt="Zaeem Ahmad" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                     <h2 class="profile-title">M Zaeem Ahmad</h2>
                     <div class="cyber-badge">🏆 1st Position – Cyber Intelligence Test</div>
 
