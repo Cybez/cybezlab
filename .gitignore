@@ -13,3 +13,4 @@ ehthumbs.db
 # Temporary files
 *.tmp
 *.log
+*.py
