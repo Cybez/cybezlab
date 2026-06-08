@@ -3,21 +3,25 @@
   /* Colors from CybezLab Logo */
   --bg-color: #ffffff;
   --bg-section: #f8fafc;
-  --fg-color: #091124; /* Dark Navy from logo */
-  
-  --primary: #0066ff;  /* Brand Blue */
+  --fg-color: #091124;
+  /* Dark Navy from logo */
+
+  --primary: #0066ff;
+  /* Brand Blue */
   --primary-hover: #0052cc;
-  
-  --secondary: #00d2ff; /* Brand Cyan */
+
+  --secondary: #00d2ff;
+  /* Brand Cyan */
   --secondary-hover: #00b8e6;
-  
-  --accent: #6366f1; /* Indigo accent */
-  
+
+  --accent: #6366f1;
+  /* Indigo accent */
+
   --border-color: #e2e8f0;
   --border-hover: #cbd5e1;
   --card-bg: #ffffff;
   --text-muted: #64748b;
-  
+
   --grid-color: rgba(9, 17, 36, 0.04);
 }
 
@@ -67,7 +71,7 @@ body {
   right: 0;
   bottom: 0;
   z-index: -1;
-  background-image: 
+  background-image:
     linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
   background-size: 40px 40px;
@@ -83,7 +87,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/assets/texture_bg.png');
+  background-image: url('/public/assets/texture_bg.png');
   background-size: 320px 320px;
   background-repeat: repeat;
   opacity: 0.035;
@@ -92,7 +96,12 @@ body {
 }
 
 /* Global Typography & Headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display, inherit);
   font-weight: 700;
   letter-spacing: -0.025em;
