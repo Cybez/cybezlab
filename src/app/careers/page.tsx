@@ -97,10 +97,9 @@ export default function CareersPage() {
           </p>
 
           <div className={styles.officeGraphic}>
+            <div className={styles.officeGraphicOverlay} />
             <div className={styles.officeGraphicInner}>
-              <div style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '1.2rem' }}>Be part of something great.</div>
-              <div style={{ height: '8px', background: 'rgba(9,17,36,0.1)', borderRadius: '4px', width: '80%', margin: '0 auto' }} />
-              <div style={{ height: '8px', background: 'rgba(9,17,36,0.1)', borderRadius: '4px', width: '60%', margin: '0 auto' }} />
+              <div style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '1.4rem' }}>Be part of something great.</div>
             </div>
           </div>
 
@@ -207,10 +206,22 @@ export default function CareersPage() {
       {/* Team Collage Grid */}
       <section className={styles.collageSection}>
         <div className={`${styles.collageGrid} container`}>
-          <div className={styles.collageItem}>Engineering Sprints</div>
-          <div className={styles.collageItem}>Karachi Office Hangout</div>
-          <div className={styles.collageItem}>Annual Dinner</div>
-          <div className={styles.collageItem}>Indoor Gaming Tournament</div>
+          <div className={`${styles.collageItem} ${styles.collageItem1}`}>
+            <div className={styles.collageItemOverlay} />
+            <span className={styles.collageItemText}>Engineering Sprints</span>
+          </div>
+          <div className={`${styles.collageItem} ${styles.collageItem2}`}>
+            <div className={styles.collageItemOverlay} />
+            <span className={styles.collageItemText}>Karachi Office Hangout</span>
+          </div>
+          <div className={`${styles.collageItem} ${styles.collageItem3}`}>
+            <div className={styles.collageItemOverlay} />
+            <span className={styles.collageItemText}>Annual Dinner</span>
+          </div>
+          <div className={`${styles.collageItem} ${styles.collageItem4}`}>
+            <div className={styles.collageItemOverlay} />
+            <span className={styles.collageItemText}>Indoor Gaming Tournament</span>
+          </div>
         </div>
       </section>
 

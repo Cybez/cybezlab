@@ -85,7 +85,7 @@ export default function ServicesPage() {
 
         {/* Abstract Workspace Grid */}
         <div className={styles.teamGrid}>
-          <div className={styles.teamCard} style={{ backgroundColor: '#eef2f6' }}>
+          <div className={`${styles.teamCard} ${styles.teamCard1}`}>
             <div className={styles.teamOverlay} />
             <div style={{ position: 'absolute', top: '20px', left: '20px', color: 'var(--primary)', zIndex: 2 }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -98,7 +98,7 @@ export default function ServicesPage() {
             <span className={styles.teamRole}>High-Speed Deployment</span>
           </div>
 
-          <div className={styles.teamCard} style={{ backgroundColor: '#fdf4ff' }}>
+          <div className={`${styles.teamCard} ${styles.teamCard2}`}>
             <div className={styles.teamOverlay} />
             <div style={{ position: 'absolute', top: '20px', left: '20px', color: 'var(--accent)', zIndex: 2 }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -111,7 +111,7 @@ export default function ServicesPage() {
             <span className={styles.teamRole}>Enterprise Security Focus</span>
           </div>
 
-          <div className={styles.teamCard} style={{ backgroundColor: '#ecfeff' }}>
+          <div className={`${styles.teamCard} ${styles.teamCard3}`}>
             <div className={styles.teamOverlay} />
             <div style={{ position: 'absolute', top: '20px', left: '20px', color: 'var(--secondary)', zIndex: 2 }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

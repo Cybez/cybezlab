@@ -123,7 +123,20 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background-image: linear-gradient(135deg, rgba(0, 102, 255, 0.02) 0%, rgba(99, 102, 241, 0.04) 100%);
+  background-image: url('/assets/careers_office_hero.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.officeGraphicOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(2px);
+  z-index: 1;
 }
 
 .officeGraphicInner {
@@ -132,6 +145,8 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  position: relative;
+  z-index: 2;
 }
 
 .processGrid {
@@ -233,24 +248,48 @@
 }
 
 .collageItem {
-  height: 180px;
+  height: 200px;
   background-color: #ffffff;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid var(--border-color);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text-muted);
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 20px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--fg-color);
   position: relative;
   overflow: hidden;
-  background-image: linear-gradient(135deg, rgba(0, 102, 255, 0.01) 0%, rgba(0, 210, 255, 0.03) 100%);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
-.collageItem:nth-child(2n) {
-  background-image: linear-gradient(135deg, rgba(99, 102, 241, 0.02) 0%, rgba(0, 102, 255, 0.02) 100%);
+.collageItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -10px rgba(9, 17, 36, 0.15);
 }
+
+.collageItemOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.85) 100%);
+  z-index: 1;
+}
+
+.collageItemText {
+  position: relative;
+  z-index: 2;
+}
+
+.collageItem1 { background-image: url('/assets/careers_collage_1.png'); }
+.collageItem2 { background-image: url('/assets/careers_collage_2.png'); }
+.collageItem3 { background-image: url('/assets/careers_collage_3.png'); }
+.collageItem4 { background-image: url('/assets/careers_collage_4.png'); }
 
 /* Application Form */
 .applySection {
