@@ -38,6 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div className="bg-texture" />
         <div className="bg-grid" />
         
         <Navbar />

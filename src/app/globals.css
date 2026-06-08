@@ -80,18 +80,17 @@ body {
   pointer-events: none;
 }
 
-.bg-grid::before {
-  content: "";
-  position: absolute;
+.bg-texture {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/public/assets/texture_bg.png');
+  z-index: -2;
+  background-image: url('/assets/texture_bg.png');
   background-size: 320px 320px;
   background-repeat: repeat;
-  opacity: 0.035;
-  z-index: -1;
+  opacity: 0.055;
   pointer-events: none;
 }
 
