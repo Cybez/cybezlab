@@ -274,14 +274,16 @@
   height: 1123px;
   background-color: #ffffff;
   color: #0f172a;
-  padding: 48px;
+  padding: 32px 40px;
   box-sizing: border-box;
   box-shadow: 0 15px 35px rgba(9, 17, 36, 0.15);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0;
   border: 1px solid #94a3b8;
   position: relative;
+  overflow: hidden;
 }
 
 /* Professional Payslip Template styling */
@@ -386,15 +388,16 @@
 }
 
 .detailLabel {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 700;
   color: #64748b;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  line-height: 1.1;
 }
 
 .detailValue {
-  font-size: 0.73rem;
+  font-size: 0.68rem;
   color: #0f172a;
   font-weight: 700;
   line-height: 1.2;
@@ -572,18 +575,20 @@
 .singleSlip {
   display: flex;
   flex-direction: column;
-  height: 312px;
+  height: 342px;
+  flex-shrink: 0;
   justify-content: space-between;
   position: relative;
+  overflow: hidden;
 }
 
 .slipHeaderCompact {
   display: flex;
   flex-direction: column;
-  border-bottom: 2px solid #000000;
-  padding-bottom: 5px;
-  margin-bottom: 6px;
-  gap: 4px;
+  border-bottom: 1.5px solid #000000;
+  padding-bottom: 4px;
+  margin-bottom: 5px;
+  gap: 3px;
 }
 
 .slipHeaderTop {
@@ -593,8 +598,8 @@
 }
 
 .logoCompact {
-  height: 28px;
-  max-width: 130px;
+  height: 22px;
+  max-width: 110px;
   object-fit: contain;
 }
 
@@ -642,34 +647,34 @@
 .metaGridCompact {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr 1fr;
-  gap: 12px;
-  margin-bottom: 6px;
+  gap: 8px;
+  margin-bottom: 5px;
 }
 
 .metaBlockCompact {
   border: 1px solid #cbd5e1;
   border-radius: 4px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   background-color: #ffffff;
 }
 
 .blockTitleCompact {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 800;
   color: #334155;
   text-transform: uppercase;
   border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 3px;
-  margin-bottom: 4px;
+  padding-bottom: 2px;
+  margin-bottom: 3px;
   letter-spacing: 0.05em;
 }
 
 .detailRowCompact {
   display: flex;
   flex-direction: column;
-  padding: 3px 0;
+  padding: 2px 0;
   border-bottom: 1px dashed #f1f5f9;
-  gap: 1px;
+  gap: 0;
 }
 
 .detailRowCompact:last-child {
@@ -681,16 +686,15 @@
   grid-template-columns: 1fr 1fr;
   border: 1px solid #000000;
   border-radius: 4px;
-  margin-bottom: 6px;
-  min-height: 100px;
+  margin-bottom: 4px;
   align-content: start;
 }
 
 .colHeaderCompact {
   background-color: #0f172a;
   color: #ffffff;
-  padding: 4px 10px;
-  font-size: 0.68rem;
+  padding: 3px 8px;
+  font-size: 0.6rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -699,10 +703,10 @@
 }
 
 .colRowsCompact {
-  padding: 6px 10px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .breakdownRowCompact {
@@ -726,10 +730,10 @@
 }
 
 .summaryColCompact {
-  padding: 4px 10px;
+  padding: 3px 8px;
   display: flex;
   justify-content: space-between;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   color: #000000;
 }
@@ -741,9 +745,9 @@
 .netSalaryBannerCompact {
   background-color: #0f172a;
   color: #ffffff;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 4px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -772,7 +776,7 @@
 .signatureSectionCompact {
   display: flex;
   justify-content: space-between;
-  padding-top: 4px;
+  padding-top: 3px;
 }
 
 .sigBlockCompact {
@@ -782,11 +786,11 @@
 
 .sigLineCompact {
   border-top: 1px solid #475569;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .sigLabelCompact {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 700;
   color: #475569;
   text-transform: uppercase;
@@ -795,8 +799,9 @@
 
 .cutLine {
   border-bottom: 1px dotted #94a3b8;
-  margin: 8px 0;
+  margin: 5px 0;
   height: 1px;
+  flex-shrink: 0;
 }
 
 /* Tabs for managing multiple slips */
