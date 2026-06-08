@@ -561,3 +561,240 @@
     padding: 16px;
   }
 }
+
+/* 3-in-1 Payslip Compact Layout */
+.singleSlip {
+  display: flex;
+  flex-direction: column;
+  height: 312px;
+  justify-content: space-between;
+  position: relative;
+}
+
+.slipHeaderCompact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #091124;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+}
+
+.logoCompact {
+  height: 28px;
+  max-width: 130px;
+  object-fit: contain;
+}
+
+.logoFallbackCompact {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #091124;
+  letter-spacing: -0.04em;
+}
+
+.companyInfoCompact {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.companyNameCompact {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #091124;
+}
+
+.copyLabelCompact {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  margin-top: 1px;
+  letter-spacing: 0.05em;
+}
+
+.slipTitleCompact {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #091124;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metaGridCompact {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr 1fr;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.metaBlockCompact {
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 6px 10px;
+  background-color: #ffffff;
+}
+
+.blockTitleCompact {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #475569;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 3px;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.detailRowCompact {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  font-size: 0.72rem;
+  border-bottom: 1px dashed #f1f5f9;
+}
+
+.detailRowCompact:last-child {
+  border-bottom: none;
+}
+
+.breakdownCompact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #091124;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  min-height: 100px;
+  align-content: start;
+}
+
+.colHeaderCompact {
+  background-color: #091124;
+  color: #ffffff;
+  padding: 4px 10px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: space-between;
+}
+
+.colRowsCompact {
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.breakdownRowCompact {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 2px;
+}
+
+.breakdownRowCompact:last-child {
+  border-bottom: none;
+}
+
+.summaryRowCompact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid #091124;
+  border-bottom: 1px solid #091124;
+  background-color: #f8fafc;
+}
+
+.summaryColCompact {
+  padding: 4px 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #091124;
+}
+
+.summaryColCompact:first-child {
+  border-right: 1px solid #091124;
+}
+
+.netSalaryBannerCompact {
+  background-color: #091124;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.netLabelCompact {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+
+.netWordsCompact {
+  font-size: 0.68rem;
+  font-style: italic;
+  opacity: 0.9;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.netValueCompact {
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.signatureSectionCompact {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+
+.sigBlockCompact {
+  width: 180px;
+  text-align: center;
+}
+
+.sigLineCompact {
+  border-top: 1px solid #475569;
+  margin-bottom: 2px;
+}
+
+.sigLabelCompact {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cutLine {
+  border-bottom: 2px dashed #94a3b8;
+  margin: 6px 0;
+  position: relative;
+  height: 2px;
+}
+
+.cutLine::before {
+  content: "✂ Cut Here";
+  position: absolute;
+  top: -8px;
+  left: 24px;
+  background-color: #ffffff;
+  padding: 0 8px;
+  font-size: 0.65rem;
+  color: #64748b;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+

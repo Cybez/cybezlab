@@ -623,165 +623,153 @@ export default function SalarySlipGenerator() {
                   transform: `scale(${scale})`,
                 }}
               >
-                {/* Header */}
-                <div>
-                  <div className={styles.slipHeader}>
-                    {!logoError ? (
-                      <img
-                        src={logoImage}
-                        alt="Company Logo"
-                        className={styles.logoPlaceholder}
-                        onError={() => setLogoError(true)} // Toggle to safe textual fallback
-                      />
-                    ) : (
-                      <div className={styles.logoFallbackText}>
-                        {companyName.toUpperCase()}
+                {['EMPLOYEE COPY', 'OFFICE COPY', 'HR / ADMIN COPY'].map((copyLabel, index) => (
+                  <div key={copyLabel} className={styles.singleSlip}>
+                    {/* Header Compact */}
+                    <div className={styles.slipHeaderCompact}>
+                      {!logoError ? (
+                        <img
+                          src={logoImage}
+                          alt="Company Logo"
+                          className={styles.logoCompact}
+                          onError={() => setLogoError(true)}
+                        />
+                      ) : (
+                        <div className={styles.logoFallbackCompact}>
+                          {companyName.toUpperCase()}
+                        </div>
+                      )}
+                      <div className={styles.companyInfoCompact}>
+                        <div className={styles.companyNameCompact}>{companyName}</div>
+                        <span className={styles.copyLabelCompact}>{copyLabel}</span>
                       </div>
-                    )}
-                    <div className={styles.companyInfo}>
-                      <div className={styles.companyNameHeader}>{companyName}</div>
-                      <div className={styles.companyAddressHeader}>
-                        {addressLine1}
-                        {addressLine2 && `\n${addressLine2}`}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Title Bar */}
-                  <div className={styles.slipTitleContainer}>
-                    <div className={styles.slipTitle}>Salary Slip - {payslipMonth}</div>
-                  </div>
-
-                  {/* Employee & Pay Details Grids */}
-                  <div className={styles.metaGrid}>
-                    <div className={styles.metaBlock}>
-                      <div className={styles.blockTitle}>Employee Details</div>
-                      <div className={styles.detailTable}>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Employee ID:</span>
-                          <span className={styles.detailValue}>{employeeId || 'N/A'}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Employee Name:</span>
-                          <span className={styles.detailValue}>{employeeName || 'N/A'}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>CNIC:</span>
-                          <span className={styles.detailValue}>{cnic || 'N/A'}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Designation:</span>
-                          <span className={styles.detailValue}>{designation || 'N/A'}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Department:</span>
-                          <span className={styles.detailValue}>{department || 'N/A'}</span>
-                        </div>
-                      </div>
+                      <div className={styles.slipTitleCompact}>Salary Slip - {payslipMonth}</div>
                     </div>
 
-                    <div className={styles.metaBlock}>
-                      <div className={styles.blockTitle}>Pay & Period Details</div>
-                      <div className={styles.detailTable}>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Period From:</span>
-                          <span className={styles.detailValue}>{formatDate(periodFrom) || 'N/A'}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Period To:</span>
-                          <span className={styles.detailValue}>{formatDate(periodTo) || 'N/A'}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Pay Date:</span>
-                          <span className={styles.detailValue}>{formatDate(payDate) || 'N/A'}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>Paid Days:</span>
-                          <span className={styles.detailValue}>{paidDays}</span>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <span className={styles.detailLabel}>LOP Days:</span>
-                          <span className={styles.detailValue}>{lopDays}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Breakdown Table columns */}
-                  <div className={styles.breakdownContainer}>
-                    <div className={styles.earningsCol}>
-                      <div className={styles.colHeader}>
-                        <span>Earnings Description</span>
-                        <span>Amount (Rs.)</span>
-                      </div>
-                      <div className={styles.colRows}>
-                        {earnings.map((earn) => (
-                          <div key={earn.id} className={styles.breakdownRow}>
-                            <span className={styles.breakdownLabel}>{earn.label}</span>
-                            <span className={styles.breakdownValue}>
-                              {earn.amount.toLocaleString()}
-                            </span>
+                    {/* Meta details Compact */}
+                    <div className={styles.metaGridCompact}>
+                      {/* Col 1 */}
+                      <div className={styles.metaBlockCompact}>
+                        <div className={styles.blockTitleCompact}>Employee Details</div>
+                        <div className={styles.detailTable}>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>ID / Name:</span>
+                            <span className={styles.detailValue}>{employeeId || 'N/A'} - {employeeName || 'N/A'}</span>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className={styles.colHeader}>
-                        <span>Deductions Description</span>
-                        <span>Amount (Rs.)</span>
-                      </div>
-                      <div className={styles.colRows}>
-                        {deductions.map((ded) => (
-                          <div key={ded.id} className={styles.breakdownRow}>
-                            <span className={styles.breakdownLabel}>{ded.label}</span>
-                            <span className={styles.breakdownValue}>
-                              {ded.amount.toLocaleString()}
-                            </span>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>CNIC:</span>
+                            <span className={styles.detailValue}>{cnic || 'N/A'}</span>
                           </div>
-                        ))}
+                        </div>
+                      </div>
+
+                      {/* Col 2 */}
+                      <div className={styles.metaBlockCompact}>
+                        <div className={styles.blockTitleCompact}>Job Details</div>
+                        <div className={styles.detailTable}>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Designation:</span>
+                            <span className={styles.detailValue}>{designation || 'N/A'}</span>
+                          </div>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Department:</span>
+                            <span className={styles.detailValue}>{department || 'N/A'}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Col 3 */}
+                      <div className={styles.metaBlockCompact}>
+                        <div className={styles.blockTitleCompact}>Period & Days</div>
+                        <div className={styles.detailTable}>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>From/To:</span>
+                            <span className={styles.detailValue}>{formatDate(periodFrom)} - {formatDate(periodTo)}</span>
+                          </div>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Paid/LOP:</span>
+                            <span className={styles.detailValue}>{paidDays} / {lopDays} Days</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Summary Totals */}
-                  <div className={styles.summaryRow}>
-                    <div className={styles.summaryCol}>
-                      <span>Total Earnings:</span>
-                      <span>Rs. {totalEarnings.toLocaleString()}</span>
-                    </div>
-                    <div className={styles.summaryCol}>
-                      <span>Total Deductions:</span>
-                      <span>Rs. {totalDeductions.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
+                    {/* Breakdown Compact */}
+                    <div className={styles.breakdownCompact}>
+                      <div className={styles.earningsCol}>
+                        <div className={styles.colHeaderCompact}>
+                          <span>Earnings</span>
+                          <span>Amount (Rs.)</span>
+                        </div>
+                        <div className={styles.colRowsCompact}>
+                          {earnings.map((earn) => (
+                            <div key={earn.id} className={styles.breakdownRowCompact}>
+                              <span className={styles.breakdownLabel}>{earn.label}</span>
+                              <span className={styles.breakdownValue}>
+                                {earn.amount.toLocaleString()}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
 
-                {/* Bottom section (Banner and Signature) */}
-                <div>
-                  {/* Net Salary Paid Banner */}
-                  <div className={styles.netSalaryBanner}>
-                    <div className={styles.netLabelBlock}>
-                      <span className={styles.netLabel}>Net Salary Paid:</span>
-                      <span className={styles.netWords}>{numberToWords(netSalary)}</span>
+                      <div>
+                        <div className={styles.colHeaderCompact}>
+                          <span>Deductions</span>
+                          <span>Amount (Rs.)</span>
+                        </div>
+                        <div className={styles.colRowsCompact}>
+                          {deductions.map((ded) => (
+                            <div key={ded.id} className={styles.breakdownRowCompact}>
+                              <span className={styles.breakdownLabel}>{ded.label}</span>
+                              <span className={styles.breakdownValue}>
+                                {ded.amount.toLocaleString()}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <div className={styles.netValue}>
-                      Rs. {netSalary.toLocaleString()}
-                    </div>
-                  </div>
 
-                  {/* Signature slots */}
-                  <div className={styles.signatureSection}>
-                    <div className={styles.sigBlock}>
-                      <div className={styles.sigLine} />
-                      <span className={styles.sigLabel}>Employee Signature</span>
+                    {/* Summary Compact */}
+                    <div className={styles.summaryRowCompact}>
+                      <div className={styles.summaryColCompact}>
+                        <span>Total Earnings:</span>
+                        <span>Rs. {totalEarnings.toLocaleString()}</span>
+                      </div>
+                      <div className={styles.summaryColCompact}>
+                        <span>Total Deductions:</span>
+                        <span>Rs. {totalDeductions.toLocaleString()}</span>
+                      </div>
                     </div>
-                    <div className={styles.sigBlock}>
-                      <div className={styles.sigLine} />
-                      <span className={styles.sigLabel}>Director Signature / Stamp</span>
+
+                    {/* Net Salary Banner Compact */}
+                    <div className={styles.netSalaryBannerCompact}>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '75%' }}>
+                        <span className={styles.netLabelCompact}>Net Salary Paid (in words):</span>
+                        <span className={styles.netWordsCompact}>{numberToWords(netSalary)}</span>
+                      </div>
+                      <div className={styles.netValueCompact}>
+                        Rs. {netSalary.toLocaleString()}
+                      </div>
                     </div>
+
+                    {/* Signatures Compact */}
+                    <div className={styles.signatureSectionCompact}>
+                      <div className={styles.sigBlockCompact}>
+                        <div className={styles.sigLineCompact} />
+                        <span className={styles.sigLabelCompact}>Employee Signature</span>
+                      </div>
+                      <div className={styles.sigBlockCompact}>
+                        <div className={styles.sigLineCompact} />
+                        <span className={styles.sigLabelCompact}>Authorized Stamp & Sign</span>
+                      </div>
+                    </div>
+
+                    {/* Cut Line */}
+                    {index < 2 && <div className={styles.cutLine} />}
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
