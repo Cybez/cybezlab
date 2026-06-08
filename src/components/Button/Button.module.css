@@ -3,15 +3,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 28px;
+  padding: 12px 26px;
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 600;
-  border-radius: 9999px;
-  border: none;
+  border-radius: 6px; /* Clean rectangular rounded corners for a modern tech feel */
+  border: 1px solid transparent;
   cursor: pointer;
   outline: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   text-decoration: none;
 }
@@ -24,66 +24,57 @@
   gap: 8px;
 }
 
-/* Primary Button Styling */
+/* Primary Button Styling - Solid Brand Blue */
 .primary {
-  background: linear-gradient(135deg, hsl(263, 90%, 51%) 0%, hsl(320, 85%, 55%) 100%);
-  color: white;
-  box-shadow: 0 4px 15px -3px hsla(263, 90%, 51%, 0.4);
+  background-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 102, 255, 0.15);
 }
 
 .primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px hsla(263, 90%, 51%, 0.6);
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px 0 rgba(0, 102, 255, 0.25);
 }
 
 .primary:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
-/* Secondary Button Styling */
+/* Secondary Button Styling - Clean Border */
 .secondary {
-  background: hsla(222, 47%, 7%, 0.5);
-  color: white;
-  border: 1px solid hsla(217, 32%, 17%, 0.8);
-  backdrop-filter: blur(8px);
+  background-color: #ffffff;
+  color: var(--fg-color);
+  border-color: var(--border-color);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .secondary:hover {
-  transform: translateY(-2px);
-  background: hsla(222, 47%, 9%, 0.8);
-  border-color: hsla(263, 90%, 65%, 0.5);
-  box-shadow: 0 4px 20px -5px hsla(263, 90%, 51%, 0.25);
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: var(--bg-section);
+  transform: translateY(-1px);
 }
 
 .secondary:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
-/* Ghost Button Styling */
+/* Ghost Button Styling - Minimalist */
 .ghost {
-  background: transparent;
-  color: hsl(210, 40%, 98%);
-  padding: 12px 20px;
+  background-color: transparent;
+  color: var(--fg-color);
+  padding: 12px 18px;
 }
 
 .ghost:hover {
-  background: hsla(210, 40%, 98%, 0.05);
-  color: white;
+  background-color: rgba(9, 17, 36, 0.04);
+  color: var(--primary);
 }
 
-/* Hover glowing backdrop effect */
-.glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-  z-index: 1;
-}
-
-.button:hover .glow {
-  transform: translateX(100%);
+/* Disabled state */
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }

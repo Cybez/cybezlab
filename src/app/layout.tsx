@@ -15,12 +15,12 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'Cybez Lab | Premium Custom Web & Software Development',
+  title: 'Cybez Lab | Custom Software & Web Application Development',
   description:
-    'Cybez Lab builds bespoke, high-performance web applications, mobile apps, cloud engineering solutions, and stunning UI/UX designs to help your business scale.',
+    'Cybez Lab designs and builds bespoke, high-performance web applications, mobile apps, and cloud engineering solutions that help businesses scale.',
   metadataBase: new URL('https://cybezlab.com'),
   openGraph: {
-    title: 'Cybez Lab | Premium Custom Web & Software Development',
+    title: 'Cybez Lab | Custom Software & Web Application Development',
     description: 'Bespoke, high-performance web & mobile software engineered to scale your business.',
     type: 'website',
   },
@@ -35,8 +35,6 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div className="bg-grid" />
-        <div className="bg-glow-1" />
-        <div className="bg-glow-2" />
         
         <Navbar />
         

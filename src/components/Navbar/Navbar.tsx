@@ -25,13 +25,17 @@ export const Navbar: React.FC = () => {
     <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={`${styles.container} container`}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoText}>Cybez<span className="text-gradient-purple">Lab</span></span>
+          <img 
+            src="/assets/cybezlab-logo.png" 
+            alt="Cybez Lab Logo" 
+            className={styles.logoImg}
+          />
         </Link>
 
         <div className={styles.links}>
           <a href="#services" className={styles.link}>Services</a>
-          <a href="#about" className={styles.link}>About</a>
-          <a href="#portfolio" className={styles.link}>Portfolio</a>
+          <a href="#portfolio" className={styles.link}>Our Work</a>
+          <a href="#about" className={styles.link}>Why Us</a>
           <a href="#contact" className={styles.link}>Contact</a>
         </div>
 

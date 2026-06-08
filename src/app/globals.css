@@ -1,25 +1,24 @@
-/* Core Design System Tokens */
+/* Core Design System Tokens - Light Theme */
 :root {
-  /* HSL Tailored Colors - Modern Dark Theme */
-  --bg-color: hsl(222, 47%, 4%);
-  --fg-color: hsl(210, 40%, 98%);
+  /* Colors from CybezLab Logo */
+  --bg-color: #ffffff;
+  --bg-section: #f8fafc;
+  --fg-color: #091124; /* Dark Navy from logo */
   
-  --primary: hsl(263, 90%, 51%);
-  --primary-glow: hsla(263, 90%, 51%, 0.15);
-  --secondary: hsl(190, 95%, 39%);
-  --secondary-glow: hsla(190, 95%, 39%, 0.15);
+  --primary: #0066ff;  /* Brand Blue */
+  --primary-hover: #0052cc;
   
-  --accent: hsl(320, 85%, 55%);
-  --card-bg: hsla(222, 47%, 7%, 0.6);
-  --card-border: hsla(217, 32%, 17%, 0.7);
-  --card-border-hover: hsla(263, 90%, 65%, 0.45);
+  --secondary: #00d2ff; /* Brand Cyan */
+  --secondary-hover: #00b8e6;
   
-  --nav-bg: hsla(222, 47%, 4%, 0.75);
-  --text-muted: hsl(215, 20%, 65%);
+  --accent: #6366f1; /* Indigo accent */
   
-  --grid-color: hsla(217, 32%, 17%, 0.15);
-  --glow-1: hsla(263, 90%, 51%, 0.2);
-  --glow-2: hsla(190, 95%, 39%, 0.25);
+  --border-color: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --card-bg: #ffffff;
+  --text-muted: #64748b;
+  
+  --grid-color: rgba(9, 17, 36, 0.04);
 }
 
 /* Reset and Global Styles */
@@ -35,29 +34,31 @@ body {
   overflow-x: hidden;
   background-color: var(--bg-color);
   color: var(--fg-color);
-  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif);
+  font-family: var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-color);
+  background: var(--bg-section);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(217, 32%, 17%);
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: #94a3b8;
 }
 
-/* Grids background */
+/* Subtle Grid Background */
 .bg-grid {
   position: fixed;
   top: 0;
@@ -68,45 +69,19 @@ body {
   background-image: 
     linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-  background-size: 50px 50px;
-  mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
-}
-
-.bg-glow-1 {
-  position: fixed;
-  top: 10%;
-  left: 15%;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: var(--glow-1);
-  filter: blur(140px);
-  z-index: -1;
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 90%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black, transparent 90%);
   pointer-events: none;
-  animation: float 20s infinite alternate;
-}
-
-.bg-glow-2 {
-  position: fixed;
-  bottom: 10%;
-  right: 15%;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: var(--glow-2);
-  filter: blur(160px);
-  z-index: -1;
-  pointer-events: none;
-  animation: float-reverse 25s infinite alternate;
 }
 
 /* Global Typography & Headings */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display, inherit);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: var(--fg-color);
 }
 
 a {
@@ -122,87 +97,37 @@ a {
   padding: 0 24px;
 }
 
-/* Text Gradient Effect */
-.text-gradient {
-  background: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, hsl(210, 40%, 98%) 40%, var(--secondary) 75%, var(--primary) 100%);
-  background-size: 200% 200%;
+/* Text Highlights & Titles */
+.text-brand-primary {
+  color: var(--primary);
+}
+
+.text-brand-gradient {
+  background: linear-gradient(135deg, var(--fg-color) 0%, var(--primary) 60%, var(--secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient-move 8s ease infinite;
+  background-clip: text;
 }
 
-.text-gradient-purple {
-  background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 50%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Crisp Light Shadows */
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* Premium Glassmorphism */
-.glass {
-  background: var(--card-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
 }
 
-.glass:hover {
-  border-color: var(--card-border-hover);
-  box-shadow: 0 10px 30px -10px var(--primary-glow);
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
 }
 
-/* Animations */
-@keyframes float {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(40px, -40px) scale(1.1);
-  }
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
 
-@keyframes float-reverse {
-  0% {
-    transform: translate(0, 0) scale(1.1);
-  }
-  100% {
-    transform: translate(-50px, 50px) scale(0.9);
-  }
-}
-
-@keyframes gradient-move {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 20px -5px rgba(9, 17, 36, 0.08);
 }
