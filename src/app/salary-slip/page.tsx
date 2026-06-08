@@ -870,9 +870,7 @@ export default function SalarySlipGenerator() {
                                   {companyName.toUpperCase()}
                                 </div>
                               )}
-                              <div className={styles.companyNameCompact}>{companyName}</div>
                             </div>
-                            <div className={styles.slipTitleCompact}>Salary Slip — {payslipMonth}</div>
                           </div>
 
                           {/* Meta details Compact */}
