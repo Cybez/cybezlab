@@ -1,0 +1,42 @@
+.card {
+  position: relative;
+  border-radius: 16px;
+  background: hsla(222, 47%, 7%, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid hsla(217, 32%, 17%, 0.7);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  padding: 32px;
+  height: 100%;
+}
+
+.glow:hover {
+  transform: translateY(-6px);
+  border-color: hsla(263, 90%, 65%, 0.35);
+  box-shadow: 
+    0 15px 35px -10px hsla(263, 90%, 51%, 0.15),
+    0 5px 15px -5px hsla(190, 95%, 39%, 0.1);
+}
+
+/* Accent top-border layout highlight */
+.borderEffect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--secondary), var(--primary), var(--accent));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.card:hover .borderEffect {
+  opacity: 1;
+}
