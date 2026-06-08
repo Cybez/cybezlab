@@ -35,9 +35,9 @@ export default function SalarySlipGenerator() {
   const [department, setDepartment] = useState('SQA');
 
   // Pay Period state
-  const [periodFrom, setPeriodFrom] = useState('2026-09-01');
-  const [periodTo, setPeriodTo] = useState('2026-09-30');
-  const [payDate, setPayDate] = useState('2026-09-30');
+  const [periodFrom, setPeriodFrom] = useState('01/09/2026');
+  const [periodTo, setPeriodTo] = useState('30/09/2026');
+  const [payDate, setPayDate] = useState('30/09/2026');
   const [paidDays, setPaidDays] = useState(30);
   const [lopDays, setLopDays] = useState(0);
 
@@ -200,22 +200,44 @@ export default function SalarySlipGenerator() {
   const formatDate = (dateStr: string): string => {
     if (!dateStr) return '';
     
-    // Timezone-safe manual component parsing for YYYY-MM-DD (e.g. input type="date")
-    const parts = dateStr.split('-');
+    const cleanStr = dateStr.trim();
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     
+    // Split by dash, slash, or dot
+    const parts = cleanStr.split(/[-/.]/);
+    
     if (parts.length === 3) {
-      const year = parseInt(parts[0], 10);
-      const monthIdx = parseInt(parts[1], 10) - 1;
-      const day = parseInt(parts[2], 10);
+      // Case 1: YYYY-MM-DD or YYYY/MM/DD
+      if (parts[0].length === 4) {
+        const year = parseInt(parts[0], 10);
+        const monthIdx = parseInt(parts[1], 10) - 1;
+        const day = parseInt(parts[2], 10);
+        if (monthIdx >= 0 && monthIdx < 12 && !isNaN(day) && !isNaN(year)) {
+          return `${months[monthIdx]} ${day}, ${year}`;
+        }
+      }
       
-      if (monthIdx >= 0 && monthIdx < 12 && !isNaN(day) && !isNaN(year)) {
-        return `${months[monthIdx]} ${day}, ${year}`;
+      // Case 2: DD/MM/YYYY or DD-MM-YYYY (Standard in Pakistan/UK)
+      if (parts[2].length === 4) {
+        const year = parseInt(parts[2], 10);
+        let day = parseInt(parts[0], 10);
+        let monthIdx = parseInt(parts[1], 10) - 1;
+        
+        // Safety check: if month index is invalid but day is 1-12, swap them (MM/DD/YYYY)
+        if ((monthIdx < 0 || monthIdx > 11) && (day >= 1 && day <= 12)) {
+          const temp = day;
+          day = monthIdx + 1;
+          monthIdx = temp - 1;
+        }
+        
+        if (monthIdx >= 0 && monthIdx < 12 && !isNaN(day) && !isNaN(year)) {
+          return `${months[monthIdx]} ${day}, ${year}`;
+        }
       }
     }
     
-    // Fallback parsing for standard date strings
-    const date = new Date(dateStr);
+    // Fallback parsing for standard date strings (e.g. "May 10, 2020")
+    const date = new Date(cleanStr);
     if (isNaN(date.getTime())) return dateStr;
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
@@ -447,18 +469,20 @@ export default function SalarySlipGenerator() {
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Period From</label>
                   <input
-                    type="date"
+                    type="text"
                     value={periodFrom}
                     onChange={(e) => setPeriodFrom(e.target.value)}
+                    placeholder="e.g. 01/09/2026"
                     className={styles.input}
                   />
                 </div>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Period To</label>
                   <input
-                    type="date"
+                    type="text"
                     value={periodTo}
                     onChange={(e) => setPeriodTo(e.target.value)}
+                    placeholder="e.g. 30/09/2026"
                     className={styles.input}
                   />
                 </div>
@@ -468,9 +492,10 @@ export default function SalarySlipGenerator() {
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Pay Date</label>
                   <input
-                    type="date"
+                    type="text"
                     value={payDate}
                     onChange={(e) => setPayDate(e.target.value)}
+                    placeholder="e.g. 30/09/2026"
                     className={styles.input}
                   />
                 </div>
@@ -702,6 +727,10 @@ export default function SalarySlipGenerator() {
                           <div className={styles.detailRowCompact}>
                             <span className={styles.detailLabel}>Paid/LOP:</span>
                             <span className={styles.detailValue}>{paidDays} / {lopDays} Days</span>
+                          </div>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Pay Date:</span>
+                            <span className={styles.detailValue}>{formatDate(payDate) || 'N/A'}</span>
                           </div>
                         </div>
                       </div>
