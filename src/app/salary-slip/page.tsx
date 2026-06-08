@@ -12,25 +12,36 @@ interface BreakupItem {
 }
 
 export default function SalarySlipGenerator() {
+  const [mounted, setMounted] = useState(false);
+  
+  // A4 Scale Tracking
+  const [scale, setScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Company details state
   const [companyName, setCompanyName] = useState('CybezLab');
   const [payslipMonth, setPayslipMonth] = useState('September 2026');
   const [addressLine1, setAddressLine1] = useState('Suite 305, 3rd Floor, Business Avenue Building, Main Shahrah-e-Faisal, PECHS Block 6');
   const [addressLine2, setAddressLine2] = useState('Karachi, Pakistan');
   const [logoImage, setLogoImage] = useState('/assets/cybezlab-logo.png');
   const [logoFileName, setLogoFileName] = useState('cybezlab-logo.png');
+  const [logoError, setLogoError] = useState(false);
 
+  // Employee details state
   const [employeeName, setEmployeeName] = useState('Muhammad Mooen');
   const [employeeId, setEmployeeId] = useState('188');
   const [cnic, setCnic] = useState('38401-5301044-9');
   const [designation, setDesignation] = useState('Internship');
   const [department, setDepartment] = useState('SQA');
 
+  // Pay Period state
   const [periodFrom, setPeriodFrom] = useState('2026-09-01');
   const [periodTo, setPeriodTo] = useState('2026-09-30');
   const [payDate, setPayDate] = useState('2026-09-30');
   const [paidDays, setPaidDays] = useState(30);
   const [lopDays, setLopDays] = useState(0);
 
+  // Dynamic tables state
   const [earnings, setEarnings] = useState<BreakupItem[]>([
     { id: '1', label: 'Basic Pay', amount: 20000 },
     { id: '2', label: 'House Rent Allowance', amount: 5000 },
@@ -44,16 +55,47 @@ export default function SalarySlipGenerator() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Live calculated fields
+  // Handle mounting on client to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Handle live resizing to scale A4 sheet
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const handleResize = () => {
+      if (containerRef.current) {
+        // subtract padding of container (32px padding on left & right = 64px)
+        const containerWidth = containerRef.current.clientWidth - 64;
+        const newScale = Math.min(1, containerWidth / 794);
+        setScale(newScale);
+      }
+    };
+
+    handleResize(); // initial calculation
+    window.addEventListener('resize', handleResize);
+    
+    // Add a tiny delay to capture layout stabilization after font loads
+    const timer = setTimeout(handleResize, 100);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
+  }, [mounted]);
+
+  // Live calculations
   const totalEarnings = earnings.reduce((sum, item) => sum + (item.amount || 0), 0);
   const totalDeductions = deductions.reduce((sum, item) => sum + (item.amount || 0), 0);
   const netSalary = Math.max(0, totalEarnings - totalDeductions);
 
-  // Logo upload change handler
+  // Logo uploader
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setLogoFileName(file.name);
+      setLogoError(false); // reset error state
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target?.result) {
@@ -64,7 +106,7 @@ export default function SalarySlipGenerator() {
     }
   };
 
-  // Dynamic earnings rows handlers
+  // Dynamic row changes
   const handleEarningChange = (id: string, field: 'label' | 'amount', value: string | number) => {
     setEarnings((prev) =>
       prev.map((item) => {
@@ -80,7 +122,7 @@ export default function SalarySlipGenerator() {
   };
 
   const addEarningRow = () => {
-    const newId = (earnings.length + 1).toString();
+    const newId = Date.now().toString();
     setEarnings((prev) => [...prev, { id: newId, label: 'Allowance', amount: 0 }]);
   };
 
@@ -90,7 +132,6 @@ export default function SalarySlipGenerator() {
     }
   };
 
-  // Dynamic deductions rows handlers
   const handleDeductionChange = (id: string, field: 'label' | 'amount', value: string | number) => {
     setDeductions((prev) =>
       prev.map((item) => {
@@ -106,7 +147,7 @@ export default function SalarySlipGenerator() {
   };
 
   const addDeductionRow = () => {
-    const newId = (deductions.length + 1).toString();
+    const newId = Date.now().toString();
     setDeductions((prev) => [...prev, { id: newId, label: 'Deduction', amount: 0 }]);
   };
 
@@ -116,7 +157,7 @@ export default function SalarySlipGenerator() {
     }
   };
 
-  // Number to Words converter (Pakistani Rupees formatting)
+  // Number to Words Converter
   const numberToWords = (num: number): string => {
     const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
     const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
@@ -133,25 +174,21 @@ export default function SalarySlipGenerator() {
     let tempNum = num;
     const parts: string[] = [];
     
-    // Millions / Lacs (using standard million for generic system, but readable)
     if (tempNum >= 1000000) {
       parts.push(convertLessThanOneThousand(Math.floor(tempNum / 1000000)) + ' Million');
       tempNum %= 1000000;
     }
     
-    // Thousands
     if (tempNum >= 1000) {
       parts.push(convertLessThanOneThousand(Math.floor(tempNum / 1000)) + ' Thousand');
       tempNum %= 1000;
     }
     
-    // Hundreds
     if (tempNum >= 100) {
       parts.push(ones[Math.floor(tempNum / 100)] + ' Hundred');
       tempNum %= 100;
     }
     
-    // Tens & Ones
     if (tempNum > 0) {
       parts.push(convertLessThanOneThousand(tempNum));
     }
@@ -159,7 +196,7 @@ export default function SalarySlipGenerator() {
     return parts.join(' ') + ' Rupees Only';
   };
 
-  // Format date helper (YYYY-MM-DD to DD/MM/YYYY)
+  // Format date helper
   const formatDate = (dateStr: string): string => {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -170,13 +207,13 @@ export default function SalarySlipGenerator() {
     return `${day}/${month}/${year}`;
   };
 
-  // Force preview redraw (dummy state update triggers UI refresh)
+  // Dynamic preview reload key
   const [dummyCount, setDummyCount] = useState(0);
   const handleRefreshPreview = () => {
     setDummyCount((prev) => prev + 1);
   };
 
-  // PDF Export logic using jspdf + html2canvas
+  // PDF Download Handler
   const handleDownloadPDF = async () => {
     const element = document.getElementById('payslip-sheet');
     if (!element) return;
@@ -186,7 +223,7 @@ export default function SalarySlipGenerator() {
       const { jsPDF } = await import('jspdf');
 
       const canvas = await html2canvas(element, {
-        scale: 2, // High DPI capture for crisp PDF output
+        scale: 2, // High resolution rendering
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
@@ -208,23 +245,40 @@ export default function SalarySlipGenerator() {
     }
   };
 
+  // If component is not mounted, return loading container (SSR protection)
+  if (!mounted) {
+    return (
+      <div className="container" style={{ padding: '120px 0', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <h2 style={{ fontWeight: 600 }}>Loading Payslip Engine...</h2>
+      </div>
+    );
+  }
+
   return (
     <main className={`${styles.pageContainer} container`}>
-      {/* Page Header */}
+      {/* Hero / Header */}
       <div className={styles.hero}>
         <h1 className={styles.heroTitle}>Salary Slip Generator – Pakistan (A4 PDF)</h1>
         <p className={styles.heroSubtitle}>
-          Professional salary slip with custom logo, CNIC, and dynamic earnings & deductions list.
+          Professional, print-ready Pakistani salary slip creator. Enter details below to see a real-time scaled A4 preview.
         </p>
       </div>
 
       <div className={styles.mainGrid}>
-        {/* Form Controls */}
+        {/* Form Controls Dashboard */}
         <div className={styles.formSide}>
           <Card hoverGlow={false}>
             {/* Company Details */}
             <div className={styles.formSection}>
-              <h3 className={styles.sectionHeader}>Company Details</h3>
+              <h3 className={styles.sectionHeader}>
+                <span className={styles.sectionIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <rect x="2" y="10" width="20" height="12" rx="2" ry="2" />
+                    <path d="M12 22V10M17 22V14M7 22V14M12 10V2l5 2-5 2" />
+                  </svg>
+                </span>
+                Company Details
+              </h3>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Company Name*</label>
@@ -234,7 +288,7 @@ export default function SalarySlipGenerator() {
                     onChange={(e) => setCompanyName(e.target.value)}
                     required
                     className={styles.input}
-                    placeholder="Enter company name"
+                    placeholder="e.g. CybezLab"
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -249,18 +303,18 @@ export default function SalarySlipGenerator() {
                 </div>
               </div>
 
-              <div className={styles.formGroup} style={{ marginBottom: '16px' }}>
+              <div className={styles.formGroup}>
                 <label className={styles.label}>Address Line 1</label>
                 <input
                   type="text"
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
                   className={styles.input}
-                  placeholder="Address Line 1"
+                  placeholder="Street / Office address detail"
                 />
               </div>
 
-              <div className={styles.formGroup} style={{ marginBottom: '16px' }}>
+              <div className={styles.formGroup}>
                 <label className={styles.label}>Address Line 2 / City, Country</label>
                 <input
                   type="text"
@@ -295,7 +349,15 @@ export default function SalarySlipGenerator() {
 
             {/* Employee Details */}
             <div className={styles.formSection} style={{ marginTop: '24px' }}>
-              <h3 className={styles.sectionHeader}>Employee Details</h3>
+              <h3 className={styles.sectionHeader}>
+                <span className={styles.sectionIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </span>
+                Employee Details
+              </h3>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Employee Name*</label>
@@ -305,7 +367,7 @@ export default function SalarySlipGenerator() {
                     onChange={(e) => setEmployeeName(e.target.value)}
                     required
                     className={styles.input}
-                    placeholder="Employee Name"
+                    placeholder="Enter Employee Name"
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -315,7 +377,7 @@ export default function SalarySlipGenerator() {
                     value={employeeId}
                     onChange={(e) => setEmployeeId(e.target.value)}
                     className={styles.input}
-                    placeholder="Employee ID"
+                    placeholder="e.g. 188"
                   />
                 </div>
               </div>
@@ -338,7 +400,7 @@ export default function SalarySlipGenerator() {
                     value={designation}
                     onChange={(e) => setDesignation(e.target.value)}
                     className={styles.input}
-                    placeholder="Designation"
+                    placeholder="e.g. Internship"
                   />
                 </div>
               </div>
@@ -350,14 +412,24 @@ export default function SalarySlipGenerator() {
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   className={styles.input}
-                  placeholder="Department"
+                  placeholder="e.g. SQA"
                 />
               </div>
             </div>
 
             {/* Pay Period */}
             <div className={styles.formSection} style={{ marginTop: '24px' }}>
-              <h3 className={styles.sectionHeader}>Pay Period</h3>
+              <h3 className={styles.sectionHeader}>
+                <span className={styles.sectionIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                </span>
+                Pay Period
+              </h3>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Period From</label>
@@ -413,9 +485,17 @@ export default function SalarySlipGenerator() {
               </div>
             </div>
 
-            {/* Income details (dynamic columns) */}
+            {/* Income & Deductions */}
             <div className={styles.formSection} style={{ marginTop: '24px' }}>
-              <h3 className={styles.sectionHeader}>Income Details</h3>
+              <h3 className={styles.sectionHeader}>
+                <span className={styles.sectionIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="12" y1="1" x2="12" y2="23" />
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                </span>
+                Income & Deductions Details
+              </h3>
               <div className={styles.incomeGrid}>
                 {/* Earnings List */}
                 <div className={styles.formGroup}>
@@ -428,7 +508,7 @@ export default function SalarySlipGenerator() {
                           value={earn.label}
                           onChange={(e) => handleEarningChange(earn.id, 'label', e.target.value)}
                           className={styles.input}
-                          placeholder="Earning label"
+                          placeholder="Label"
                         />
                         <input
                           type="number"
@@ -442,7 +522,7 @@ export default function SalarySlipGenerator() {
                           type="button"
                           onClick={() => removeEarningRow(earn.id)}
                           className={styles.deleteRowBtn}
-                          title="Delete row"
+                          title="Remove row"
                         >
                           &times;
                         </button>
@@ -450,7 +530,11 @@ export default function SalarySlipGenerator() {
                     ))}
                   </div>
                   <button type="button" onClick={addEarningRow} className={styles.addRowBtn}>
-                    + Add Earnings Row
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Add Earning
                   </button>
                 </div>
 
@@ -465,7 +549,7 @@ export default function SalarySlipGenerator() {
                           value={ded.label}
                           onChange={(e) => handleDeductionChange(ded.id, 'label', e.target.value)}
                           className={styles.input}
-                          placeholder="Deduction label"
+                          placeholder="Label"
                         />
                         <input
                           type="number"
@@ -479,7 +563,7 @@ export default function SalarySlipGenerator() {
                           type="button"
                           onClick={() => removeDeductionRow(ded.id)}
                           className={styles.deleteRowBtn}
-                          title="Delete row"
+                          title="Remove row"
                         >
                           &times;
                         </button>
@@ -487,13 +571,17 @@ export default function SalarySlipGenerator() {
                     ))}
                   </div>
                   <button type="button" onClick={addDeductionRow} className={styles.addRowBtn}>
-                    + Add Deduction Row
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Add Deduction
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Actions */}
+            {/* Form Actions */}
             <div className={styles.actionRow}>
               <Button variant="secondary" onClick={handleRefreshPreview}>
                 Refresh Preview
@@ -505,175 +593,193 @@ export default function SalarySlipGenerator() {
           </Card>
         </div>
 
-        {/* Live A4 Preview Side */}
+        {/* Sticky viewport for live A4 document preview */}
         <div className={styles.previewSide}>
           <h3 className={styles.previewTitle}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
+            <span className={styles.previewIcon}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </span>
             Live A4 PDF Preview
           </h3>
-          <div className={styles.previewSheetContainer}>
-            {/* The Print Sheet captured by html2canvas */}
-            <div id="payslip-sheet" className={styles.previewSheet} key={dummyCount}>
-              {/* Slip Top Header */}
-              <div>
-                <div className={styles.slipHeader}>
-                  <img
-                    src={logoImage}
-                    alt="Company Logo"
-                    className={styles.logoPlaceholder}
-                    onError={(e) => {
-                      // fallback to standard logo if current logo image link fails
-                      (e.target as HTMLImageElement).src = '/assets/cybezlab-logo.png';
-                    }}
-                  />
-                  <div className={styles.companyInfo}>
-                    <div className={styles.companyNameHeader}>{companyName}</div>
-                    <div className={styles.companyAddressHeader}>
-                      {addressLine1}
-                      {addressLine2 && `\n${addressLine2}`}
-                    </div>
-                  </div>
-                </div>
 
-                {/* Slip Title */}
-                <div className={styles.slipTitleContainer}>
-                  <div className={styles.slipTitle}>Salary Slip - {payslipMonth}</div>
-                </div>
-
-                {/* Metadata block (Employee and Pay details) */}
-                <div className={styles.metaGrid}>
-                  {/* Employee Block */}
-                  <div className={styles.metaBlock}>
-                    <div className={styles.blockTitle}>Employee Details</div>
-                    <div className={styles.detailTable}>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Employee ID:</span>
-                        <span className={styles.detailValue}>{employeeId || 'N/A'}</span>
+          <div ref={containerRef} className={styles.previewSheetContainer}>
+            {/* Wrapper element reserving exact scaled layout boundaries */}
+            <div 
+              className={styles.previewSheetWrapper}
+              style={{
+                width: `${794 * scale}px`,
+                height: `${1123 * scale}px`
+              }}
+            >
+              {/* Target A4 element captured by canvas */}
+              <div 
+                id="payslip-sheet" 
+                className={styles.previewSheet} 
+                key={dummyCount}
+                style={{
+                  transform: `scale(${scale})`,
+                }}
+              >
+                {/* Header */}
+                <div>
+                  <div className={styles.slipHeader}>
+                    {!logoError ? (
+                      <img
+                        src={logoImage}
+                        alt="Company Logo"
+                        className={styles.logoPlaceholder}
+                        onError={() => setLogoError(true)} // Toggle to safe textual fallback
+                      />
+                    ) : (
+                      <div className={styles.logoFallbackText}>
+                        {companyName.toUpperCase()}
                       </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Employee Name:</span>
-                        <span className={styles.detailValue}>{employeeName || 'N/A'}</span>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>CNIC:</span>
-                        <span className={styles.detailValue}>{cnic || 'N/A'}</span>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Designation:</span>
-                        <span className={styles.detailValue}>{designation || 'N/A'}</span>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Department:</span>
-                        <span className={styles.detailValue}>{department || 'N/A'}</span>
+                    )}
+                    <div className={styles.companyInfo}>
+                      <div className={styles.companyNameHeader}>{companyName}</div>
+                      <div className={styles.companyAddressHeader}>
+                        {addressLine1}
+                        {addressLine2 && `\n${addressLine2}`}
                       </div>
                     </div>
                   </div>
 
-                  {/* Pay Period Block */}
-                  <div className={styles.metaBlock}>
-                    <div className={styles.blockTitle}>Pay & Period Details</div>
-                    <div className={styles.detailTable}>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Period From:</span>
-                        <span className={styles.detailValue}>{formatDate(periodFrom) || 'N/A'}</span>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Period To:</span>
-                        <span className={styles.detailValue}>{formatDate(periodTo) || 'N/A'}</span>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Pay Date:</span>
-                        <span className={styles.detailValue}>{formatDate(payDate) || 'N/A'}</span>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>Paid Days:</span>
-                        <span className={styles.detailValue}>{paidDays}</span>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <span className={styles.detailLabel}>LOP Days:</span>
-                        <span className={styles.detailValue}>{lopDays}</span>
-                      </div>
-                    </div>
+                  {/* Title Bar */}
+                  <div className={styles.slipTitleContainer}>
+                    <div className={styles.slipTitle}>Salary Slip - {payslipMonth}</div>
                   </div>
-                </div>
 
-                {/* Earnings & Deductions Tables */}
-                <div className={styles.breakdownContainer}>
-                  {/* Earnings column */}
-                  <div className={styles.earningsCol}>
-                    <div className={styles.colHeader}>
-                      <span>Earnings Description</span>
-                      <span>Amount (Rs.)</span>
-                    </div>
-                    <div className={styles.colRows}>
-                      {earnings.map((earn) => (
-                        <div key={earn.id} className={styles.breakdownRow}>
-                          <span className={styles.breakdownLabel}>{earn.label}</span>
-                          <span className={styles.breakdownValue}>
-                            {earn.amount.toLocaleString()}
-                          </span>
+                  {/* Employee & Pay Details Grids */}
+                  <div className={styles.metaGrid}>
+                    <div className={styles.metaBlock}>
+                      <div className={styles.blockTitle}>Employee Details</div>
+                      <div className={styles.detailTable}>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Employee ID:</span>
+                          <span className={styles.detailValue}>{employeeId || 'N/A'}</span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Deductions column */}
-                  <div>
-                    <div className={styles.colHeader}>
-                      <span>Deductions Description</span>
-                      <span>Amount (Rs.)</span>
-                    </div>
-                    <div className={styles.colRows}>
-                      {deductions.map((ded) => (
-                        <div key={ded.id} className={styles.breakdownRow}>
-                          <span className={styles.breakdownLabel}>{ded.label}</span>
-                          <span className={styles.breakdownValue}>
-                            {ded.amount.toLocaleString()}
-                          </span>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Employee Name:</span>
+                          <span className={styles.detailValue}>{employeeName || 'N/A'}</span>
                         </div>
-                      ))}
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>CNIC:</span>
+                          <span className={styles.detailValue}>{cnic || 'N/A'}</span>
+                        </div>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Designation:</span>
+                          <span className={styles.detailValue}>{designation || 'N/A'}</span>
+                        </div>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Department:</span>
+                          <span className={styles.detailValue}>{department || 'N/A'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.metaBlock}>
+                      <div className={styles.blockTitle}>Pay & Period Details</div>
+                      <div className={styles.detailTable}>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Period From:</span>
+                          <span className={styles.detailValue}>{formatDate(periodFrom) || 'N/A'}</span>
+                        </div>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Period To:</span>
+                          <span className={styles.detailValue}>{formatDate(periodTo) || 'N/A'}</span>
+                        </div>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Pay Date:</span>
+                          <span className={styles.detailValue}>{formatDate(payDate) || 'N/A'}</span>
+                        </div>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>Paid Days:</span>
+                          <span className={styles.detailValue}>{paidDays}</span>
+                        </div>
+                        <div className={styles.detailRow}>
+                          <span className={styles.detailLabel}>LOP Days:</span>
+                          <span className={styles.detailValue}>{lopDays}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Breakdown Table columns */}
+                  <div className={styles.breakdownContainer}>
+                    <div className={styles.earningsCol}>
+                      <div className={styles.colHeader}>
+                        <span>Earnings Description</span>
+                        <span>Amount (Rs.)</span>
+                      </div>
+                      <div className={styles.colRows}>
+                        {earnings.map((earn) => (
+                          <div key={earn.id} className={styles.breakdownRow}>
+                            <span className={styles.breakdownLabel}>{earn.label}</span>
+                            <span className={styles.breakdownValue}>
+                              {earn.amount.toLocaleString()}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className={styles.colHeader}>
+                        <span>Deductions Description</span>
+                        <span>Amount (Rs.)</span>
+                      </div>
+                      <div className={styles.colRows}>
+                        {deductions.map((ded) => (
+                          <div key={ded.id} className={styles.breakdownRow}>
+                            <span className={styles.breakdownLabel}>{ded.label}</span>
+                            <span className={styles.breakdownValue}>
+                              {ded.amount.toLocaleString()}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Summary Totals */}
+                  <div className={styles.summaryRow}>
+                    <div className={styles.summaryCol}>
+                      <span>Total Earnings:</span>
+                      <span>Rs. {totalEarnings.toLocaleString()}</span>
+                    </div>
+                    <div className={styles.summaryCol}>
+                      <span>Total Deductions:</span>
+                      <span>Rs. {totalDeductions.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Summary Row */}
-                <div className={styles.summaryRow}>
-                  <div className={styles.summaryCol}>
-                    <span>Total Earnings:</span>
-                    <span>Rs. {totalEarnings.toLocaleString()}</span>
+                {/* Bottom section (Banner and Signature) */}
+                <div>
+                  {/* Net Salary Paid Banner */}
+                  <div className={styles.netSalaryBanner}>
+                    <div className={styles.netLabelBlock}>
+                      <span className={styles.netLabel}>Net Salary Paid:</span>
+                      <span className={styles.netWords}>{numberToWords(netSalary)}</span>
+                    </div>
+                    <div className={styles.netValue}>
+                      Rs. {netSalary.toLocaleString()}
+                    </div>
                   </div>
-                  <div className={styles.summaryCol}>
-                    <span>Total Deductions:</span>
-                    <span>Rs. {totalDeductions.toLocaleString()}</span>
-                  </div>
-                </div>
-              </div>
 
-              {/* Bottom Section */}
-              <div>
-                {/* Net Salary Banner */}
-                <div className={styles.netSalaryBanner}>
-                  <div className={styles.netLabelBlock}>
-                    <span className={styles.netLabel}>Net Salary Paid:</span>
-                    <span className={styles.netWords}>{numberToWords(netSalary)}</span>
-                  </div>
-                  <div className={styles.netValue}>
-                    Rs. {netSalary.toLocaleString()}
-                  </div>
-                </div>
-
-                {/* Signatures */}
-                <div className={styles.signatureSection}>
-                  <div className={styles.sigBlock}>
-                    <div className={styles.sigLine} />
-                    <span className={styles.sigLabel}>Employee Signature</span>
-                  </div>
-                  <div className={styles.sigBlock}>
-                    <div className={styles.sigLine} />
-                    <span className={styles.sigLabel}>Director Signature / Stamp</span>
+                  {/* Signature slots */}
+                  <div className={styles.signatureSection}>
+                    <div className={styles.sigBlock}>
+                      <div className={styles.sigLine} />
+                      <span className={styles.sigLabel}>Employee Signature</span>
+                    </div>
+                    <div className={styles.sigBlock}>
+                      <div className={styles.sigLine} />
+                      <span className={styles.sigLabel}>Director Signature / Stamp</span>
+                    </div>
                   </div>
                 </div>
               </div>

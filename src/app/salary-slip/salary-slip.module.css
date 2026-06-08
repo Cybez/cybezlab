@@ -2,32 +2,42 @@
   display: flex;
   flex-direction: column;
   padding-bottom: 120px;
+  position: relative;
 }
 
 .hero {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-  color: #ffffff;
-  padding: 40px 32px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 36px 40px;
+  border-radius: 16px;
   margin-bottom: 40px;
-  box-shadow: 0 10px 25px -5px rgba(0, 102, 255, 0.15);
+  box-shadow: 0 10px 30px -10px rgba(9, 17, 36, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .heroTitle {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 800;
-  margin-bottom: 8px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  color: var(--fg-color);
+  background: linear-gradient(135deg, var(--fg-color) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .heroSubtitle {
-  font-size: 1.05rem;
-  opacity: 0.9;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.5;
 }
 
 .mainGrid {
   display: grid;
-  grid-template-columns: 1fr 820px;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 40px;
   align-items: start;
 }
@@ -35,27 +45,38 @@
 .formSide {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
 }
 
 .formSection {
-  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .sectionHeader {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--fg-color);
-  margin-bottom: 20px;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionIcon {
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .formRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 16px;
 }
 
 .formGroup {
@@ -65,7 +86,7 @@
 }
 
 .label {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--fg-color);
 }
@@ -76,12 +97,12 @@
   background-color: var(--bg-section);
   border: 1px solid var(--border-color);
   border-radius: 6px;
-  padding: 12px 16px;
+  padding: 14px 18px;
   color: var(--fg-color);
   font-family: inherit;
   font-size: 0.95rem;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
 }
 
@@ -90,7 +111,7 @@
 .textarea:focus {
   border-color: var(--primary);
   background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.08);
 }
 
 .fileInputWrapper {
@@ -101,23 +122,26 @@
 }
 
 .fileInputButton {
-  background-color: var(--bg-section);
+  background-color: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: 6px;
-  padding: 10px 16px;
+  padding: 12px 20px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--fg-color);
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
 
 .fileInputButton:hover {
   border-color: var(--primary);
   color: var(--primary);
+  background-color: var(--bg-section);
 }
 
 .fileName {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
 }
 
@@ -126,7 +150,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 12px;
 }
 
 .dynamicRow {
@@ -140,22 +163,22 @@
 }
 
 .amountInput {
-  max-width: 120px;
+  max-width: 140px;
 }
 
 .deleteRowBtn {
   background: none;
   border: 1px solid #fee2e2;
   color: #ef4444;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-weight: bold;
+  font-size: 1.25rem;
 }
 
 .deleteRowBtn:hover {
@@ -167,27 +190,29 @@
   background: none;
   border: none;
   color: var(--primary);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
   align-self: flex-start;
+  margin-top: 4px;
 }
 
 .addRowBtn:hover {
-  background-color: rgba(0, 102, 255, 0.05);
-  text-decoration: underline;
+  background-color: rgba(0, 102, 255, 0.06);
+  text-decoration: none;
+  transform: translateX(2px);
 }
 
 .incomeGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px;
+  gap: 32px;
 }
 
 /* Actions */
@@ -195,70 +220,90 @@
   display: flex;
   justify-content: flex-end;
   gap: 16px;
-  margin-top: 10px;
+  margin-top: 16px;
   border-top: 1px solid var(--border-color);
-  padding-top: 24px;
+  padding-top: 28px;
 }
 
 /* Preview Sheet Side */
 .previewSide {
   position: sticky;
   top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .previewTitle {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--fg-color);
-  margin-bottom: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.previewIcon {
+  color: var(--primary);
 }
 
 .previewSheetContainer {
   width: 100%;
-  overflow-x: auto;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  background-color: #f1f5f9;
-  padding: 24px;
+  border-radius: 16px;
+  background-color: #cbd5e1;
+  padding: 32px;
   display: flex;
   justify-content: center;
-  box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
+  align-items: flex-start;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
 }
 
-/* A4 Sheet Proportions (794px x 1123px at 96 DPI) */
+/* Scaling Wrapper */
+.previewSheetWrapper {
+  position: relative;
+  transform-origin: top center;
+  transition: width 0.2s ease, height 0.2s ease;
+}
+
+/* Fixed A4 dimensions for high-fidelity PDF render */
 .previewSheet {
   width: 794px;
   height: 1123px;
   background-color: #ffffff;
-  color: #1e293b;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #0f172a;
   padding: 48px;
   box-sizing: border-box;
-  box-shadow: 0 10px 25px rgba(9, 17, 36, 0.08);
+  box-shadow: 0 15px 35px rgba(9, 17, 36, 0.15);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 1px solid #94a3b8;
   position: relative;
-  z-index: 10;
 }
 
-/* Payslip Inner Styles */
+/* Professional Payslip Template styling */
 .slipHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 2px solid #0f172a;
-  padding-bottom: 20px;
+  align-items: center;
+  border-bottom: 3px solid #091124;
+  padding-bottom: 24px;
   margin-bottom: 24px;
 }
 
 .logoPlaceholder {
   height: 60px;
-  max-width: 220px;
+  max-width: 200px;
   object-fit: contain;
+}
+
+.logoFallbackText {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #091124;
+  letter-spacing: -0.04em;
 }
 
 .companyInfo {
@@ -267,72 +312,71 @@
 }
 
 .companyNameHeader {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 4px;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #091124;
+  margin-bottom: 6px;
 }
 
 .companyAddressHeader {
-  font-size: 0.82rem;
-  color: #64748b;
+  font-size: 0.8rem;
+  color: #475569;
   line-height: 1.4;
   white-space: pre-line;
 }
 
 .slipTitleContainer {
   text-align: center;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 12px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 10px;
   margin-bottom: 24px;
   border-radius: 4px;
 }
 
 .slipTitle {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #091124;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
-/* Metadata Details (Employee / Pay Period) */
+/* Metadata Tables layout */
 .metaGrid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
   margin-bottom: 24px;
 }
 
 .metaBlock {
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
   padding: 16px;
   background-color: #ffffff;
 }
 
 .blockTitle {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #475569;
   text-transform: uppercase;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 8px;
-  margin-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
   letter-spacing: 0.05em;
 }
 
 .detailTable {
   width: 100%;
-  border-collapse: collapse;
 }
 
 .detailRow {
   display: flex;
   justify-content: space-between;
   padding: 6px 0;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   border-bottom: 1px dashed #f1f5f9;
 }
 
@@ -348,42 +392,39 @@
 .detailValue {
   color: #0f172a;
   font-weight: 700;
-  text-align: right;
 }
 
-/* Breakdown Grid */
+/* Earnings & Deductions Tables */
 .breakdownContainer {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid #94a3b8;
-  border-radius: 4px;
+  border: 1px solid #091124;
+  border-radius: 6px;
   margin-bottom: 24px;
   overflow: hidden;
-  min-height: 380px;
+  min-height: 340px;
   align-content: start;
 }
 
 .earningsCol {
-  border-right: 1px solid #94a3b8;
+  border-right: 1px solid #091124;
 }
 
 .colHeader {
-  background-color: #f1f5f9;
-  color: #0f172a;
+  background-color: #091124;
+  color: #ffffff;
   padding: 10px 16px;
   font-size: 0.85rem;
   font-weight: 800;
   text-transform: uppercase;
-  border-bottom: 1px solid #94a3b8;
   letter-spacing: 0.05em;
   display: flex;
   justify-content: space-between;
 }
 
 .colRows {
-  padding: 12px 16px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -393,6 +434,12 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.88rem;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 6px;
+}
+
+.breakdownRow:last-child {
+  border-bottom: none;
 }
 
 .breakdownLabel {
@@ -405,33 +452,34 @@
   font-weight: 700;
 }
 
-/* Summary Row */
+/* Summary Box */
 .summaryRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-top: 1px solid #94a3b8;
-  border-bottom: 1px solid #94a3b8;
+  border-top: 1px solid #091124;
+  border-bottom: 1px solid #091124;
   background-color: #f8fafc;
 }
 
 .summaryCol {
-  padding: 10px 16px;
+  padding: 12px 16px;
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 800;
+  color: #091124;
 }
 
 .summaryCol:first-child {
-  border-right: 1px solid #94a3b8;
+  border-right: 1px solid #091124;
 }
 
-/* Net Salary Banner */
+/* Net Salary Block styling */
 .netSalaryBanner {
-  background-color: #0f172a;
+  background-color: #091124;
   color: #ffffff;
-  padding: 16px 20px;
-  border-radius: 4px;
+  padding: 18px 24px;
+  border-radius: 6px;
   margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
@@ -445,26 +493,29 @@
 
 .netLabel {
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  opacity: 0.8;
+  color: var(--secondary);
 }
 
 .netWords {
   font-size: 0.85rem;
   font-style: italic;
   margin-top: 4px;
+  opacity: 0.9;
   font-weight: 500;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .netValue {
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   font-weight: 900;
   letter-spacing: -0.02em;
 }
 
-/* Signatures */
+/* Signature blocks */
 .signatureSection {
   display: flex;
   justify-content: space-between;
@@ -478,25 +529,22 @@
 }
 
 .sigLine {
-  border-top: 1px solid #94a3b8;
+  border-top: 1px solid #475569;
   margin-bottom: 8px;
 }
 
 .sigLabel {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #64748b;
+  color: #475569;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 /* Responsive adjust */
-@media (max-width: 1300px) {
+@media (max-width: 1200px) {
   .mainGrid {
     grid-template-columns: 1fr;
-  }
-  .previewSheetContainer {
-    justify-content: flex-start;
   }
 }
 
@@ -508,5 +556,8 @@
   .incomeGrid {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+  .previewSheetContainer {
+    padding: 16px;
   }
 }
