@@ -196,15 +196,28 @@ export default function SalarySlipGenerator() {
     return parts.join(' ') + ' Rupees Only';
   };
 
-  // Format date helper
+  // Format date helper (outputs "Month Day, Year" e.g., "September 1, 2026")
   const formatDate = (dateStr: string): string => {
     if (!dateStr) return '';
+    
+    // Timezone-safe manual component parsing for YYYY-MM-DD (e.g. input type="date")
+    const parts = dateStr.split('-');
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    if (parts.length === 3) {
+      const year = parseInt(parts[0], 10);
+      const monthIdx = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+      
+      if (monthIdx >= 0 && monthIdx < 12 && !isNaN(day) && !isNaN(year)) {
+        return `${months[monthIdx]} ${day}, ${year}`;
+      }
+    }
+    
+    // Fallback parsing for standard date strings
     const date = new Date(dateStr);
     if (isNaN(date.getTime())) return dateStr;
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
 
   // Dynamic preview reload key
