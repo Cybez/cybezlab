@@ -209,3 +209,74 @@
     font-size: 2rem;
   }
 }
+
+/* Parallax and Highlight Effects */
+.heroGraphicWrapper {
+  position: relative;
+  width: 100%;
+  perspective: 1000px;
+  margin-top: 30px;
+}
+
+.heroParallax {
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.heroGraphicContainer {
+  position: relative;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 16px 40px -20px rgba(9, 17, 36, 0.08);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroGraphicContainer::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 102, 255, 0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heroGraphicContainer:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(0, 102, 255, 0.35);
+  box-shadow: 
+    0 20px 40px -16px rgba(0, 102, 255, 0.12),
+    0 0 15px -5px rgba(0, 210, 255, 0.2);
+}
+
+.heroGraphicContainer:hover::before {
+  opacity: 1;
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  z-index: 2;
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .heroGraphicWrapper {
+    max-width: 400px;
+    margin: 30px auto 10px;
+  }
+}

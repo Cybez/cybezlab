@@ -43,16 +43,23 @@
 /* Hero Section */
 .hero {
   padding: 120px 0 80px;
-  text-align: center;
+  overflow: hidden;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: center;
+  width: 100%;
 }
 
 .heroContent {
-  max-width: 900px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 32px;
+  align-items: flex-start;
+  text-align: left;
+  gap: 24px;
 }
 
 .heroBadge {
@@ -77,8 +84,8 @@
 }
 
 .heroTitle {
-  font-size: 4.8rem;
-  line-height: 1.1;
+  font-size: 4.2rem;
+  line-height: 1.15;
   font-weight: 800;
   letter-spacing: -0.04em;
   color: var(--fg-color);
@@ -95,7 +102,91 @@
   font-size: 1.25rem;
   color: var(--text-muted);
   line-height: 1.65;
-  max-width: 680px;
+  max-width: 580px;
+}
+
+/* Hero Parallax and Highlight Effects */
+.heroGraphicWrapper {
+  position: relative;
+  width: 100%;
+  perspective: 1000px;
+}
+
+.heroParallax {
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.heroGraphicContainer {
+  position: relative;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 16px 40px -20px rgba(9, 17, 36, 0.08);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroGraphicContainer::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 102, 255, 0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heroGraphicContainer:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(0, 102, 255, 0.35);
+  box-shadow: 
+    0 24px 48px -16px rgba(0, 102, 255, 0.12),
+    0 0 20px -5px rgba(0, 210, 255, 0.2);
+}
+
+.heroGraphicContainer:hover::before {
+  opacity: 1;
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  z-index: 2;
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .heroContent {
+    align-items: center;
+    text-align: center;
+  }
+  .heroTitle {
+    font-size: 3.2rem;
+  }
+  .heroSubtitle {
+    max-width: 100%;
+  }
+  .heroGraphicWrapper {
+    max-width: 500px;
+    margin: 0 auto;
+  }
 }
 
 .heroActions {

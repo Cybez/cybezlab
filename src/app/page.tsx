@@ -1,11 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/Button/Button';
 import { Card } from '@/components/Card/Card';
 import styles from './page.module.css';
 
 export default function Home() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,34 +42,44 @@ export default function Home() {
     <main className={styles.main}>
       {/* 1. Hero Section */}
       <section className={`${styles.hero} container`}>
-        <div className={styles.heroContent}>
-          <div className={styles.heroBadge}>
-            <span className={styles.heroBadgeDot} />
-            Accepting Custom Software Projects
+        <div className={styles.heroGrid}>
+          <div className={styles.heroContent}>
+            <div className={styles.heroBadge}>
+              <span className={styles.heroBadgeDot} />
+              Accepting Custom Software Projects
+            </div>
+            <h1 className={styles.heroTitle}>
+              We're Building Apps of <span className={styles.heroTitleHighlight}>Tomorrow</span>
+            </h1>
+            <p className={styles.heroSubtitle}>
+              We design and build bespoke, high-performance web applications and digital products that help forward-thinking companies scale.
+            </p>
+            <div className={styles.heroActions}>
+              <Button onClick={() => {
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}>
+                Start a Project
+              </Button>
+              <Button variant="secondary" onClick={() => {
+                const servicesSection = document.getElementById('services');
+                if (servicesSection) {
+                  servicesSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}>
+                Explore Services
+              </Button>
+            </div>
           </div>
-          <h1 className={styles.heroTitle}>
-            We're Building Apps of <span className={styles.heroTitleHighlight}>Tomorrow</span>
-          </h1>
-          <p className={styles.heroSubtitle}>
-            We design and build bespoke, high-performance web applications and digital products that help forward-thinking companies scale.
-          </p>
-          <div className={styles.heroActions}>
-            <Button onClick={() => {
-              const contactSection = document.getElementById('contact');
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}>
-              Start a Project
-            </Button>
-            <Button variant="secondary" onClick={() => {
-              const servicesSection = document.getElementById('services');
-              if (servicesSection) {
-                servicesSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}>
-              Explore Services
-            </Button>
+
+          <div className={styles.heroGraphicWrapper}>
+            <div className={styles.heroParallax} style={{ transform: `translateY(${scrollY * 0.12}px)` }}>
+              <div className={styles.heroGraphicContainer}>
+                <img src="/assets/home_hero.png" alt="Cybez Lab Developer Illustration" className={styles.heroImage} />
+              </div>
+            </div>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/Card/Card';
 import { Button } from '@/components/Button/Button';
 import styles from './work.module.css';
@@ -16,6 +16,13 @@ interface Project {
 
 export default function WorkPage() {
   const [activeFilter, setActiveFilter] = useState<'all' | 'productive' | 'products' | 'gaming' | 'agriculture'>('all');
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const projects: Project[] = [
     {
@@ -175,11 +182,21 @@ export default function WorkPage() {
     <main className={styles.workPage}>
       {/* Hero Section */}
       <section className={`${styles.hero} container`}>
-        <div className={styles.heroContent}>
-          <h1 className={`${styles.heroTitle} text-brand-gradient`}>Our Featured Work</h1>
-          <p className={styles.heroSubtitle}>
-            We build responsive software, custom web systems, mobile applications, and design languages that power industries around the world.
-          </p>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroContent}>
+            <h1 className={`${styles.heroTitle} text-brand-gradient`}>Our Featured Work</h1>
+            <p className={styles.heroSubtitle}>
+              We build responsive software, custom web systems, mobile applications, and design languages that power industries around the world.
+            </p>
+          </div>
+
+          <div className={styles.heroGraphicWrapper}>
+            <div className={styles.heroParallax} style={{ transform: `translateY(${scrollY * 0.12}px)` }}>
+              <div className={styles.heroGraphicContainer}>
+                <img src="/assets/work_hero.png" alt="Cybez Lab Portfolio Illustration" className={styles.heroImage} />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -7,6 +7,7 @@ import styles from './services.module.css';
 
 export default function ServicesPage() {
   const [activeTab, setActiveTab] = useState('software-dev');
+  const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,6 +20,7 @@ export default function ServicesPage() {
   // Handle active tab highlighting based on scroll position
   useEffect(() => {
     const handleScroll = () => {
+      setScrollY(window.scrollY);
       const sections = ['software-dev', 'emerging-tech', 'cloud-infra', 'qa-support'];
       const scrollPosition = window.scrollY + 250;
 
@@ -66,21 +68,31 @@ export default function ServicesPage() {
     <main className={styles.servicesPage}>
       {/* Hero Section */}
       <section className={`${styles.hero} container`}>
-        <div className={styles.heroContent}>
-          <h1 className={`${styles.heroTitle} text-brand-gradient`}>
-            Designing Futures, Crafting Success
-          </h1>
-          <p className={styles.heroSubtitle}>
-            We design, develop, and deploy production-grade software solutions using modern frameworks, cloud systems, and user-centered design principles.
-          </p>
-          <Button onClick={() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}>
-            Get a Free Quote
-          </Button>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroContent}>
+            <h1 className={`${styles.heroTitle} text-brand-gradient`}>
+              Designing Futures, Crafting Success
+            </h1>
+            <p className={styles.heroSubtitle}>
+              We design, develop, and deploy production-grade software solutions using modern frameworks, cloud systems, and user-centered design principles.
+            </p>
+            <Button onClick={() => {
+              const contactSection = document.getElementById('contact');
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}>
+              Get a Free Quote
+            </Button>
+          </div>
+
+          <div className={styles.heroGraphicWrapper}>
+            <div className={styles.heroParallax} style={{ transform: `translateY(${scrollY * 0.12}px)` }}>
+              <div className={styles.heroGraphicContainer}>
+                <img src="/assets/services_hero.png" alt="Services Infrastructure Illustration" className={styles.heroImage} />
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Abstract Workspace Grid */}

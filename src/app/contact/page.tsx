@@ -1,10 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/Button/Button';
 import styles from './contact.module.css';
 
 export default function ContactPage() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -36,6 +44,13 @@ export default function ContactPage() {
         <div className={styles.formCard}>
           <div className={styles.introCol}>
             <h1 className={styles.title}>Ready to get started?</h1>
+            <div className={styles.heroGraphicWrapper}>
+              <div className={styles.heroParallax} style={{ transform: `translateY(${scrollY * 0.08}px)` }}>
+                <div className={styles.heroGraphicContainer}>
+                  <img src="/assets/contact_hero.png" alt="Contact Assistance Illustration" className={styles.heroImage} />
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className={styles.formCol}>

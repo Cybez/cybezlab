@@ -1,11 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/Card/Card';
 import { Button } from '@/components/Button/Button';
 import styles from './careers.module.css';
 
 export default function CareersPage() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -43,11 +51,21 @@ export default function CareersPage() {
     <main className={styles.careersPage}>
       {/* Hero Section */}
       <section className={`${styles.hero} container`}>
-        <div className={styles.heroContent}>
-          <h1 className={`${styles.heroTitle} text-brand-gradient`}>Careers</h1>
-          <p className={styles.heroSubtitle}>
-            Grow with global top talent. <span style={{ color: 'var(--primary)', fontWeight: 800 }}>Grow</span> with us.
-          </p>
+        <div className={styles.heroGrid}>
+          <div className={styles.heroContent}>
+            <h1 className={`${styles.heroTitle} text-brand-gradient`}>Careers</h1>
+            <p className={styles.heroSubtitle}>
+              Grow with global top talent. <span style={{ color: 'var(--primary)', fontWeight: 800 }}>Grow</span> with us.
+            </p>
+          </div>
+
+          <div className={styles.heroGraphicWrapper}>
+            <div className={styles.heroParallax} style={{ transform: `translateY(${scrollY * 0.12}px)` }}>
+              <div className={styles.heroGraphicContainer}>
+                <img src="/assets/careers_hero.png" alt="Careers Recruitment Illustration" className={styles.heroImage} />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
