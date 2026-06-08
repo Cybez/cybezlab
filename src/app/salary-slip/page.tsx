@@ -394,14 +394,38 @@ export default function SalarySlipGenerator() {
     setDummyCount((prev) => prev + 1);
   };
 
-  // PDF Download Handler (multi-page PDF)
+  // PDF Download Handler - loads libs from CDN to avoid Turbopack bundling them
   const handleDownloadPDF = async () => {
     const pages = document.querySelectorAll('[data-payslip-page]');
     if (pages.length === 0) return;
 
     try {
-      const html2canvas = (await import('html2canvas')).default;
-      const { jsPDF } = await import('jspdf');
+      // Load html2canvas from CDN if not already loaded
+      if (!(window as unknown as Record<string, unknown>)['html2canvas']) {
+        await new Promise<void>((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js';
+          s.onload = () => resolve();
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+
+      // Load jsPDF from CDN if not already loaded
+      if (!(window as unknown as Record<string, unknown>)['jspdf']) {
+        await new Promise<void>((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = 'https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js';
+          s.onload = () => resolve();
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const h2c = (window as any)['html2canvas'];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { jsPDF } = (window as any)['jspdf'];
 
       const pdf = new jsPDF('p', 'pt', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -409,20 +433,18 @@ export default function SalarySlipGenerator() {
 
       for (let i = 0; i < pages.length; i++) {
         const pageElement = pages[i] as HTMLElement;
-        const canvas = await html2canvas(pageElement, {
-          scale: 2, // High resolution rendering
+        const canvas = await h2c(pageElement, {
+          scale: 2,
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
         });
 
         const imgData = canvas.toDataURL('image/png');
-        if (i > 0) {
-          pdf.addPage();
-        }
+        if (i > 0) pdf.addPage();
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
       }
-      
+
       const fileSuffix = payslipMonth.toLowerCase().replace(/[^a-z0-9]+/g, '_');
       pdf.save(`payslips_${fileSuffix}.pdf`);
     } catch (err) {
