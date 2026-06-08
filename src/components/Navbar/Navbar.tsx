@@ -156,14 +156,9 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className={styles.cta}>
-          <Button variant="secondary" onClick={() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}>
-            Get in Touch
-          </Button>
+          <Link href="/contact">
+            <Button variant="secondary">Get in Touch</Button>
+          </Link>
         </div>
       </div>
     </nav>

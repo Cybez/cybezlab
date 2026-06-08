@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   description:
     'Cybez Lab designs and builds bespoke, high-performance web applications, mobile apps, and cloud engineering solutions that help businesses scale.',
   metadataBase: new URL('https://cybezlab.com'),
+  icons: {
+    icon: '/assets/CybezLab.png',
+    shortcut: '/assets/CybezLab.png',
+  },
   openGraph: {
     title: 'Cybez Lab | Custom Software & Web Application Development',
     description: 'Bespoke, high-performance web & mobile software engineered to scale your business.',
