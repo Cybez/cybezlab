@@ -1,0 +1,258 @@
+.workPage {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  padding-bottom: 120px;
+}
+
+/* Hero Section */
+.hero {
+  padding: 80px 0 60px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 640px;
+}
+
+/* Category Filter Tabs */
+.tabsWrapper {
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 0;
+  margin-bottom: 60px;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: sticky;
+  top: 70px;
+  z-index: 90;
+}
+
+.tabsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.tabLink {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.tabLink:hover,
+.activeTab {
+  color: var(--primary);
+}
+
+.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: 99px;
+}
+
+/* Project Grid */
+.portfolioGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px;
+}
+
+.projectCard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.mockupContainer {
+  width: 100%;
+  height: 260px;
+  background-color: var(--bg-section);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.mockupBrowser {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(9, 17, 36, 0.04);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.browserHeader {
+  height: 24px;
+  background: var(--bg-section);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 6px;
+}
+
+.browserDots {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  box-shadow: 12px 0 0 #cbd5e1, 24px 0 0 #cbd5e1;
+}
+
+.browserBody {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Mockup Layout Parts */
+.mockBox {
+  height: 44px;
+  border: 1px solid rgba(0, 102, 255, 0.2);
+  border-radius: 4px;
+  background-color: rgba(0, 102, 255, 0.03);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.mockLineLong {
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  width: 85%;
+}
+
+.mockLineMed {
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  width: 65%;
+}
+
+.mockLineShort {
+  height: 8px;
+  background-color: var(--border-color);
+  border-radius: 4px;
+  width: 45%;
+}
+
+.mockTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--fg-color);
+  letter-spacing: -0.01em;
+}
+
+.projectTags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.projectTag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  background-color: rgba(0, 102, 255, 0.06);
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.projectDescription {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* CTA Banner Section */
+.ctaBanner {
+  background-color: var(--bg-section);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+  padding: 100px 0;
+  margin-top: 100px;
+}
+
+.ctaContent {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.ctaTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--fg-color);
+  letter-spacing: -0.02em;
+}
+
+.ctaSubtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 992px) {
+  .portfolioGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+  
+  .tabsWrapper {
+    top: 70px;
+  }
+}

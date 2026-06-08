@@ -149,8 +149,9 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <Link href="/#portfolio" className={styles.link}>Our Work</Link>
+          <Link href="/work" className={styles.link}>Our Work</Link>
           <Link href="/#about" className={styles.link}>Why Us</Link>
+          <Link href="/careers" className={styles.link}>Careers</Link>
           <Link href="/#contact" className={styles.link}>Contact</Link>
         </div>
 

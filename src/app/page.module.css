@@ -496,8 +496,68 @@
 
 /* Contact Section */
 .contactContainer {
-  max-width: 720px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 40px;
+  max-width: 1000px;
   margin: 0 auto;
+}
+
+.contactInfoCard {
+  background-color: var(--bg-section);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.contactInfoTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--fg-color);
+}
+
+.contactInfoList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contactInfoItem {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.contactInfoIcon {
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3px;
+}
+
+.contactInfoText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactInfoLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.contactInfoValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fg-color);
+  line-height: 1.5;
 }
 
 .form {
@@ -607,5 +667,10 @@
   
   .portfolioGrid {
     grid-template-columns: 1fr;
+  }
+  
+  .contactContainer {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 }

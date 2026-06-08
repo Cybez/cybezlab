@@ -62,10 +62,10 @@ export const Footer: React.FC = () => {
           <div className={styles.linksGroup}>
             <h4 className={styles.title}>Services</h4>
             <ul className={styles.list}>
-              <li><a href="#services" className={styles.link}>Web Development</a></li>
-              <li><a href="#services" className={styles.link}>Mobile Applications</a></li>
-              <li><a href="#services" className={styles.link}>Cloud Solutions</a></li>
-              <li><a href="#services" className={styles.link}>UI/UX Product Design</a></li>
+              <li><Link href="/services#software-dev" className={styles.link}>Web Development</Link></li>
+              <li><Link href="/services#software-dev" className={styles.link}>Mobile Applications</Link></li>
+              <li><Link href="/services#cloud-infra" className={styles.link}>Cloud Solutions</Link></li>
+              <li><Link href="/services#software-dev" className={styles.link}>UI/UX Product Design</Link></li>
             </ul>
           </div>
 
@@ -73,9 +73,10 @@ export const Footer: React.FC = () => {
           <div className={styles.linksGroup}>
             <h4 className={styles.title}>Company</h4>
             <ul className={styles.list}>
-              <li><a href="#about" className={styles.link}>About Us</a></li>
-              <li><a href="#portfolio" className={styles.link}>Our Work</a></li>
-              <li><a href="#contact" className={styles.link}>Contact</a></li>
+              <li><Link href="/#about" className={styles.link}>About Us</Link></li>
+              <li><Link href="/work" className={styles.link}>Our Work</Link></li>
+              <li><Link href="/careers" className={styles.link}>Careers</Link></li>
+              <li><Link href="/#contact" className={styles.link}>Contact</Link></li>
             </ul>
           </div>
 
@@ -86,6 +87,27 @@ export const Footer: React.FC = () => {
               <li><a href="https://github.com/Cybez" target="_blank" rel="noopener noreferrer" className={styles.link}>GitHub</a></li>
               <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className={styles.link}>LinkedIn</a></li>
               <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className={styles.link}>Twitter</a></li>
+            </ul>
+          </div>
+
+          {/* Links Column 4: Contact Us */}
+          <div className={styles.linksGroup}>
+            <h4 className={styles.title}>Contact Us</h4>
+            <ul className={styles.list} style={{ gap: '16px' }}>
+              <li className={styles.contactItem}>
+                <span className={styles.contactLabel}>Phone:</span>
+                <a href="tel:+923390066509" className={styles.contactValue}>+92 339 0066509</a>
+              </li>
+              <li className={styles.contactItem}>
+                <span className={styles.contactLabel}>Email:</span>
+                <a href="mailto:info@cybezlab.com" className={styles.contactValue}>info@cybezlab.com</a>
+              </li>
+              <li className={styles.contactItem} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span className={styles.contactLabel}>Address:</span>
+                <span className={styles.addressValue}>
+                  Suite 305, 3rd Floor, Business Avenue Building, Main Shahrah-e-Faisal, PECHS Block 6, Karachi, Pakistan
+                </span>
+              </li>
             </ul>
           </div>
         </div>
