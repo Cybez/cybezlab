@@ -270,20 +270,19 @@
 }
 
 .techBadge {
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 10px;
+  border-radius: 10px;
   border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   transition: all 0.2s ease;
+  cursor: default;
 }
 
 .techBadge svg {
-  width: 16px;
-  height: 16px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
 }
 
