@@ -26,6 +26,7 @@
   color: var(--fg-color);
   background: linear-gradient(135deg, var(--fg-color) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -385,13 +386,18 @@
 }
 
 .detailLabel {
+  font-size: 0.6rem;
+  font-weight: 700;
   color: #64748b;
-  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .detailValue {
+  font-size: 0.73rem;
   color: #0f172a;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 /* Earnings & Deductions Tables */
@@ -573,11 +579,17 @@
 
 .slipHeaderCompact {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   border-bottom: 2px solid #000000;
-  padding-bottom: 6px;
+  padding-bottom: 5px;
   margin-bottom: 6px;
+  gap: 4px;
+}
+
+.slipHeaderTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .logoCompact {
@@ -616,11 +628,15 @@
 }
 
 .slipTitleCompact {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #000000;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  text-align: center;
+  border-top: 1px dotted #94a3b8;
+  padding-top: 4px;
+  width: 100%;
 }
 
 .metaGridCompact {
@@ -650,10 +666,10 @@
 
 .detailRowCompact {
   display: flex;
-  justify-content: space-between;
-  padding: 2px 0;
-  font-size: 0.72rem;
+  flex-direction: column;
+  padding: 3px 0;
   border-bottom: 1px dashed #f1f5f9;
+  gap: 1px;
 }
 
 .detailRowCompact:last-child {

@@ -338,7 +338,7 @@ export default function SalarySlipGenerator() {
     if (!dateStr) return '';
     
     const cleanStr = dateStr.trim();
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     
     // Split by dash, slash, or dot
     const parts = cleanStr.split(/[-/.]/);
@@ -857,22 +857,22 @@ export default function SalarySlipGenerator() {
                         <div key={slip.id} className={styles.singleSlip}>
                           {/* Header Compact */}
                           <div className={styles.slipHeaderCompact}>
-                            {!logoError ? (
-                              <img
-                                src={logoImage}
-                                alt="Company Logo"
-                                className={styles.logoCompact}
-                                onError={() => setLogoError(true)}
-                              />
-                            ) : (
-                              <div className={styles.logoFallbackCompact}>
-                                {companyName.toUpperCase()}
-                              </div>
-                            )}
-                            <div className={styles.companyInfoCompact}>
+                            <div className={styles.slipHeaderTop}>
+                              {!logoError ? (
+                                <img
+                                  src={logoImage}
+                                  alt="Company Logo"
+                                  className={styles.logoCompact}
+                                  onError={() => setLogoError(true)}
+                                />
+                              ) : (
+                                <div className={styles.logoFallbackCompact}>
+                                  {companyName.toUpperCase()}
+                                </div>
+                              )}
                               <div className={styles.companyNameCompact}>{companyName}</div>
                             </div>
-                            <div className={styles.slipTitleCompact}>Salary Slip - {payslipMonth}</div>
+                            <div className={styles.slipTitleCompact}>Salary Slip — {payslipMonth}</div>
                           </div>
 
                           {/* Meta details Compact */}
