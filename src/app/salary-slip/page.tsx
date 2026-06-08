@@ -11,6 +11,22 @@ interface BreakupItem {
   amount: number;
 }
 
+interface SlipData {
+  id: string;
+  employeeName: string;
+  employeeId: string;
+  cnic: string;
+  designation: string;
+  department: string;
+  periodFrom: string;
+  periodTo: string;
+  payDate: string;
+  paidDays: number;
+  lopDays: number;
+  earnings: BreakupItem[];
+  deductions: BreakupItem[];
+}
+
 export default function SalarySlipGenerator() {
   const [mounted, setMounted] = useState(false);
   
@@ -18,7 +34,7 @@ export default function SalarySlipGenerator() {
   const [scale, setScale] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Company details state
+  // Shared company details state
   const [companyName, setCompanyName] = useState('CybezLab');
   const [payslipMonth, setPayslipMonth] = useState('September 2026');
   const [addressLine1, setAddressLine1] = useState('Suite 305, 3rd Floor, Business Avenue Building, Main Shahrah-e-Faisal, PECHS Block 6');
@@ -27,31 +43,54 @@ export default function SalarySlipGenerator() {
   const [logoFileName, setLogoFileName] = useState('cybezlab-logo.png');
   const [logoError, setLogoError] = useState(false);
 
-  // Employee details state
-  const [employeeName, setEmployeeName] = useState('Muhammad Mooen');
-  const [employeeId, setEmployeeId] = useState('188');
-  const [cnic, setCnic] = useState('38401-5301044-9');
-  const [designation, setDesignation] = useState('Internship');
-  const [department, setDepartment] = useState('SQA');
-
-  // Pay Period state
-  const [periodFrom, setPeriodFrom] = useState('01/09/2026');
-  const [periodTo, setPeriodTo] = useState('30/09/2026');
-  const [payDate, setPayDate] = useState('30/09/2026');
-  const [paidDays, setPaidDays] = useState(30);
-  const [lopDays, setLopDays] = useState(0);
-
-  // Dynamic tables state
-  const [earnings, setEarnings] = useState<BreakupItem[]>([
-    { id: '1', label: 'Basic Pay', amount: 20000 },
-    { id: '2', label: 'House Rent Allowance', amount: 5000 },
-    { id: '3', label: 'Medical Allowance', amount: 2000 },
+  // Slips list state
+  const [slips, setSlips] = useState<SlipData[]>([
+    {
+      id: '1',
+      employeeName: 'Muhammad Mooen',
+      employeeId: '188',
+      cnic: '38401-5301044-9',
+      designation: 'Internship',
+      department: 'SQA',
+      periodFrom: '01/09/2026',
+      periodTo: '30/09/2026',
+      payDate: '30/09/2026',
+      paidDays: 30,
+      lopDays: 0,
+      earnings: [
+        { id: '1', label: 'Basic Pay', amount: 20000 },
+        { id: '2', label: 'House Rent Allowance', amount: 5000 },
+        { id: '3', label: 'Medical Allowance', amount: 2000 },
+      ],
+      deductions: [
+        { id: '1', label: 'Party Fund', amount: 1200 },
+        { id: '2', label: 'Income Tax', amount: 500 },
+      ],
+    },
+    {
+      id: '2',
+      employeeName: 'Sarah Khan',
+      employeeId: '189',
+      cnic: '42101-1234567-8',
+      designation: 'Software Engineer',
+      department: 'Engineering',
+      periodFrom: '01/09/2026',
+      periodTo: '30/09/2026',
+      payDate: '30/09/2026',
+      paidDays: 30,
+      lopDays: 0,
+      earnings: [
+        { id: '1', label: 'Basic Pay', amount: 50000 },
+        { id: '2', label: 'House Rent Allowance', amount: 15000 },
+        { id: '3', label: 'Medical Allowance', amount: 5000 },
+      ],
+      deductions: [
+        { id: '1', label: 'Professional Tax', amount: 200 },
+        { id: '2', label: 'Income Tax', amount: 1500 },
+      ],
+    }
   ]);
-
-  const [deductions, setDeductions] = useState<BreakupItem[]>([
-    { id: '1', label: 'Party Fund', amount: 1200 },
-    { id: '2', label: 'Income Tax', amount: 500 },
-  ]);
+  const [activeSlipIndex, setActiveSlipIndex] = useState(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,10 +124,20 @@ export default function SalarySlipGenerator() {
     };
   }, [mounted]);
 
-  // Live calculations
-  const totalEarnings = earnings.reduce((sum, item) => sum + (item.amount || 0), 0);
-  const totalDeductions = deductions.reduce((sum, item) => sum + (item.amount || 0), 0);
-  const netSalary = Math.max(0, totalEarnings - totalDeductions);
+  // Safe active slip access
+  const currentSlip = slips[activeSlipIndex] || slips[0];
+
+  // Live calculations helper
+  const getSlipSummary = (slip: SlipData) => {
+    const totalEarnings = slip.earnings.reduce((sum, item) => sum + (item.amount || 0), 0);
+    const totalDeductions = slip.deductions.reduce((sum, item) => sum + (item.amount || 0), 0);
+    const netSalary = Math.max(0, totalEarnings - totalDeductions);
+    return {
+      totalEarnings,
+      totalDeductions,
+      netSalary,
+    };
+  };
 
   // Logo uploader
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,58 +155,135 @@ export default function SalarySlipGenerator() {
     }
   };
 
+  // Switch slip controls
+  const addNewSlip = () => {
+    const newId = Date.now().toString();
+    const newSlip: SlipData = {
+      id: newId,
+      employeeName: 'New Employee',
+      employeeId: (slips.length + 188).toString(),
+      cnic: '',
+      designation: 'Software Engineer',
+      department: 'Engineering',
+      periodFrom: currentSlip?.periodFrom || '01/09/2026',
+      periodTo: currentSlip?.periodTo || '30/09/2026',
+      payDate: currentSlip?.payDate || '30/09/2026',
+      paidDays: 30,
+      lopDays: 0,
+      earnings: [
+        { id: '1', label: 'Basic Pay', amount: 25000 },
+      ],
+      deductions: [
+        { id: '1', label: 'Income Tax', amount: 0 },
+      ],
+    };
+    setSlips((prev) => [...prev, newSlip]);
+    setActiveSlipIndex(slips.length);
+  };
+
+  const deleteSlip = (index: number) => {
+    if (slips.length <= 1) return;
+    setSlips((prev) => prev.filter((_, idx) => idx !== index));
+    setActiveSlipIndex((prev) => Math.max(0, prev - 1));
+  };
+
+  // Modify active slip fields
+  const updateActiveSlip = (field: keyof SlipData, value: any) => {
+    setSlips((prev) =>
+      prev.map((slip, idx) => (idx === activeSlipIndex ? { ...slip, [field]: value } : slip))
+    );
+  };
+
   // Dynamic row changes
   const handleEarningChange = (id: string, field: 'label' | 'amount', value: string | number) => {
-    setEarnings((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            [field]: field === 'amount' ? Number(value) || 0 : value,
-          };
-        }
-        return item;
+    setSlips((prev) =>
+      prev.map((slip, idx) => {
+        if (idx !== activeSlipIndex) return slip;
+        const updatedEarnings = slip.earnings.map((earn) => {
+          if (earn.id === id) {
+            return {
+              ...earn,
+              [field]: field === 'amount' ? Number(value) || 0 : value,
+            };
+          }
+          return earn;
+        });
+        return { ...slip, earnings: updatedEarnings };
       })
     );
   };
 
   const addEarningRow = () => {
-    const newId = Date.now().toString();
-    setEarnings((prev) => [...prev, { id: newId, label: 'Allowance', amount: 0 }]);
+    setSlips((prev) =>
+      prev.map((slip, idx) => {
+        if (idx !== activeSlipIndex) return slip;
+        const newId = Date.now().toString();
+        return {
+          ...slip,
+          earnings: [...slip.earnings, { id: newId, label: 'Allowance', amount: 0 }],
+        };
+      })
+    );
   };
 
   const removeEarningRow = (id: string) => {
-    if (earnings.length > 1) {
-      setEarnings((prev) => prev.filter((item) => item.id !== id));
-    }
+    setSlips((prev) =>
+      prev.map((slip, idx) => {
+        if (idx !== activeSlipIndex) return slip;
+        if (slip.earnings.length <= 1) return slip;
+        return {
+          ...slip,
+          earnings: slip.earnings.filter((earn) => earn.id !== id),
+        };
+      })
+    );
   };
 
   const handleDeductionChange = (id: string, field: 'label' | 'amount', value: string | number) => {
-    setDeductions((prev) =>
-      prev.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            [field]: field === 'amount' ? Number(value) || 0 : value,
-          };
-        }
-        return item;
+    setSlips((prev) =>
+      prev.map((slip, idx) => {
+        if (idx !== activeSlipIndex) return slip;
+        const updatedDeductions = slip.deductions.map((ded) => {
+          if (ded.id === id) {
+            return {
+              ...ded,
+              [field]: field === 'amount' ? Number(value) || 0 : value,
+            };
+          }
+          return ded;
+        });
+        return { ...slip, deductions: updatedDeductions };
       })
     );
   };
 
   const addDeductionRow = () => {
-    const newId = Date.now().toString();
-    setDeductions((prev) => [...prev, { id: newId, label: 'Deduction', amount: 0 }]);
+    setSlips((prev) =>
+      prev.map((slip, idx) => {
+        if (idx !== activeSlipIndex) return slip;
+        const newId = Date.now().toString();
+        return {
+          ...slip,
+          deductions: [...slip.deductions, { id: newId, label: 'Deduction', amount: 0 }],
+        };
+      })
+    );
   };
 
   const removeDeductionRow = (id: string) => {
-    if (deductions.length > 1) {
-      setDeductions((prev) => prev.filter((item) => item.id !== id));
-    }
+    setSlips((prev) =>
+      prev.map((slip, idx) => {
+        if (idx !== activeSlipIndex) return slip;
+        if (slip.deductions.length <= 1) return slip;
+        return {
+          ...slip,
+          deductions: slip.deductions.filter((ded) => ded.id !== id),
+        };
+      })
+    );
   };
 
-  // Number to Words Converter
+  // Number to Words Converter (fixed with proper hundreds handling)
   const numberToWords = (num: number): string => {
     const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
     const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
@@ -165,10 +291,21 @@ export default function SalarySlipGenerator() {
     if (num === 0) return 'Zero Rupees Only';
     
     const convertLessThanOneThousand = (n: number): string => {
-      if (n < 20) return ones[n];
-      const t = tens[Math.floor(n / 10)];
-      const o = ones[n % 10];
-      return t + (o ? ' ' + o : '');
+      let str = '';
+      if (n >= 100) {
+        str += ones[Math.floor(n / 100)] + ' Hundred ';
+        n %= 100;
+      }
+      if (n > 0) {
+        if (n < 20) {
+          str += ones[n];
+        } else {
+          const t = tens[Math.floor(n / 10)];
+          const o = ones[n % 10];
+          str += t + (o ? ' ' + o : '');
+        }
+      }
+      return str.trim();
     };
     
     let tempNum = num;
@@ -242,38 +379,52 @@ export default function SalarySlipGenerator() {
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   };
 
+  // Helper to chunk slips into groups of 3 (for A4 pages layout)
+  const chunkArray = <T,>(arr: T[], size: number): T[][] => {
+    const chunks: T[][] = [];
+    for (let i = 0; i < arr.length; i += size) {
+      chunks.push(arr.slice(i, i + size));
+    }
+    return chunks;
+  };
+
   // Dynamic preview reload key
   const [dummyCount, setDummyCount] = useState(0);
   const handleRefreshPreview = () => {
     setDummyCount((prev) => prev + 1);
   };
 
-  // PDF Download Handler
+  // PDF Download Handler (multi-page PDF)
   const handleDownloadPDF = async () => {
-    const element = document.getElementById('payslip-sheet');
-    if (!element) return;
+    const pages = document.querySelectorAll('[data-payslip-page]');
+    if (pages.length === 0) return;
 
     try {
       const html2canvas = (await import('html2canvas')).default;
       const { jsPDF } = await import('jspdf');
 
-      const canvas = await html2canvas(element, {
-        scale: 2, // High resolution rendering
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#ffffff',
-      });
-
-      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'pt', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
-      
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+      for (let i = 0; i < pages.length; i++) {
+        const pageElement = pages[i] as HTMLElement;
+        const canvas = await html2canvas(pageElement, {
+          scale: 2, // High resolution rendering
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        if (i > 0) {
+          pdf.addPage();
+        }
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      }
       
       const fileSuffix = payslipMonth.toLowerCase().replace(/[^a-z0-9]+/g, '_');
-      const nameSuffix = employeeName.toLowerCase().replace(/[^a-z0-9]+/g, '_');
-      pdf.save(`payslip_${nameSuffix}_${fileSuffix}.pdf`);
+      pdf.save(`payslips_${fileSuffix}.pdf`);
     } catch (err) {
       console.error('Error generating PDF payslip:', err);
       alert('Could not download PDF. Please try again.');
@@ -303,6 +454,40 @@ export default function SalarySlipGenerator() {
         {/* Form Controls Dashboard */}
         <div className={styles.formSide}>
           <Card hoverGlow={false}>
+            {/* Slips Tabs Bar */}
+            <div className={styles.tabsWrapper}>
+              <div className={styles.tabsList}>
+                {slips.map((slip, idx) => (
+                  <button
+                    key={slip.id}
+                    type="button"
+                    onClick={() => setActiveSlipIndex(idx)}
+                    className={`${styles.tabButton} ${idx === activeSlipIndex ? styles.activeTab : ''}`}
+                  >
+                    {idx + 1}. {slip.employeeName || 'Untitled'}
+                  </button>
+                ))}
+              </div>
+              <div className={styles.tabActions}>
+                <button
+                  type="button"
+                  onClick={addNewSlip}
+                  className={styles.addSlipBtn}
+                >
+                  + Add Slip
+                </button>
+                {slips.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => deleteSlip(activeSlipIndex)}
+                    className={styles.deleteSlipBtn}
+                  >
+                    Delete Slip
+                  </button>
+                )}
+              </div>
+            </div>
+
             {/* Company Details */}
             <div className={styles.formSection}>
               <h3 className={styles.sectionHeader}>
@@ -391,15 +576,15 @@ export default function SalarySlipGenerator() {
                     <circle cx="12" cy="7" r="4" />
                   </svg>
                 </span>
-                Employee Details
+                Employee Details ({activeSlipIndex + 1} of {slips.length})
               </h3>
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Employee Name*</label>
                   <input
                     type="text"
-                    value={employeeName}
-                    onChange={(e) => setEmployeeName(e.target.value)}
+                    value={currentSlip?.employeeName || ''}
+                    onChange={(e) => updateActiveSlip('employeeName', e.target.value)}
                     required
                     className={styles.input}
                     placeholder="Enter Employee Name"
@@ -409,8 +594,8 @@ export default function SalarySlipGenerator() {
                   <label className={styles.label}>Employee ID</label>
                   <input
                     type="text"
-                    value={employeeId}
-                    onChange={(e) => setEmployeeId(e.target.value)}
+                    value={currentSlip?.employeeId || ''}
+                    onChange={(e) => updateActiveSlip('employeeId', e.target.value)}
                     className={styles.input}
                     placeholder="e.g. 188"
                   />
@@ -422,8 +607,8 @@ export default function SalarySlipGenerator() {
                   <label className={styles.label}>CNIC</label>
                   <input
                     type="text"
-                    value={cnic}
-                    onChange={(e) => setCnic(e.target.value)}
+                    value={currentSlip?.cnic || ''}
+                    onChange={(e) => updateActiveSlip('cnic', e.target.value)}
                     className={styles.input}
                     placeholder="e.g. 38401-5301044-9"
                   />
@@ -432,8 +617,8 @@ export default function SalarySlipGenerator() {
                   <label className={styles.label}>Designation</label>
                   <input
                     type="text"
-                    value={designation}
-                    onChange={(e) => setDesignation(e.target.value)}
+                    value={currentSlip?.designation || ''}
+                    onChange={(e) => updateActiveSlip('designation', e.target.value)}
                     className={styles.input}
                     placeholder="e.g. Internship"
                   />
@@ -444,8 +629,8 @@ export default function SalarySlipGenerator() {
                 <label className={styles.label}>Department</label>
                 <input
                   type="text"
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
+                  value={currentSlip?.department || ''}
+                  onChange={(e) => updateActiveSlip('department', e.target.value)}
                   className={styles.input}
                   placeholder="e.g. SQA"
                 />
@@ -470,8 +655,8 @@ export default function SalarySlipGenerator() {
                   <label className={styles.label}>Period From</label>
                   <input
                     type="text"
-                    value={periodFrom}
-                    onChange={(e) => setPeriodFrom(e.target.value)}
+                    value={currentSlip?.periodFrom || ''}
+                    onChange={(e) => updateActiveSlip('periodFrom', e.target.value)}
                     placeholder="e.g. 01/09/2026"
                     className={styles.input}
                   />
@@ -480,8 +665,8 @@ export default function SalarySlipGenerator() {
                   <label className={styles.label}>Period To</label>
                   <input
                     type="text"
-                    value={periodTo}
-                    onChange={(e) => setPeriodTo(e.target.value)}
+                    value={currentSlip?.periodTo || ''}
+                    onChange={(e) => updateActiveSlip('periodTo', e.target.value)}
                     placeholder="e.g. 30/09/2026"
                     className={styles.input}
                   />
@@ -493,8 +678,8 @@ export default function SalarySlipGenerator() {
                   <label className={styles.label}>Pay Date</label>
                   <input
                     type="text"
-                    value={payDate}
-                    onChange={(e) => setPayDate(e.target.value)}
+                    value={currentSlip?.payDate || ''}
+                    onChange={(e) => updateActiveSlip('payDate', e.target.value)}
                     placeholder="e.g. 30/09/2026"
                     className={styles.input}
                   />
@@ -503,8 +688,8 @@ export default function SalarySlipGenerator() {
                   <label className={styles.label}>Paid Days</label>
                   <input
                     type="number"
-                    value={paidDays}
-                    onChange={(e) => setPaidDays(Number(e.target.value) || 0)}
+                    value={currentSlip?.paidDays ?? 30}
+                    onChange={(e) => updateActiveSlip('paidDays', Number(e.target.value) || 0)}
                     className={styles.input}
                     min="0"
                   />
@@ -515,8 +700,8 @@ export default function SalarySlipGenerator() {
                 <label className={styles.label}>LOP (Loss of Pay) Days</label>
                 <input
                   type="number"
-                  value={lopDays}
-                  onChange={(e) => setLopDays(Number(e.target.value) || 0)}
+                  value={currentSlip?.lopDays ?? 0}
+                  onChange={(e) => updateActiveSlip('lopDays', Number(e.target.value) || 0)}
                   className={styles.input}
                   min="0"
                 />
@@ -539,7 +724,7 @@ export default function SalarySlipGenerator() {
                 <div className={styles.formGroup}>
                   <label className={styles.label} style={{ marginBottom: '8px' }}>Earnings</label>
                   <div className={styles.rowList}>
-                    {earnings.map((earn) => (
+                    {(currentSlip?.earnings || []).map((earn) => (
                       <div key={earn.id} className={styles.dynamicRow}>
                         <input
                           type="text"
@@ -580,7 +765,7 @@ export default function SalarySlipGenerator() {
                 <div className={styles.formGroup}>
                   <label className={styles.label} style={{ marginBottom: '8px' }}>Deductions</label>
                   <div className={styles.rowList}>
-                    {deductions.map((ded) => (
+                    {(currentSlip?.deductions || []).map((ded) => (
                       <div key={ded.id} className={styles.dynamicRow}>
                         <input
                           type="text"
@@ -625,7 +810,7 @@ export default function SalarySlipGenerator() {
                 Refresh Preview
               </Button>
               <Button onClick={handleDownloadPDF}>
-                Download Payslip (PDF)
+                Download All Slips (PDF)
               </Button>
             </div>
           </Card>
@@ -643,177 +828,186 @@ export default function SalarySlipGenerator() {
             Live A4 PDF Preview
           </h3>
 
-          <div ref={containerRef} className={styles.previewSheetContainer}>
-            {/* Wrapper element reserving exact scaled layout boundaries */}
-            <div 
-              className={styles.previewSheetWrapper}
-              style={{
-                width: `${794 * scale}px`,
-                height: `${1123 * scale}px`
-              }}
-            >
-              {/* Target A4 element captured by canvas */}
-              <div 
-                id="payslip-sheet" 
-                className={styles.previewSheet} 
-                key={dummyCount}
-                style={{
-                  transform: `scale(${scale})`,
-                }}
-              >
-                {['EMPLOYEE COPY', 'OFFICE COPY', 'HR / ADMIN COPY'].map((copyLabel, index) => (
-                  <div key={copyLabel} className={styles.singleSlip}>
-                    {/* Header Compact */}
-                    <div className={styles.slipHeaderCompact}>
-                      {!logoError ? (
-                        <img
-                          src={logoImage}
-                          alt="Company Logo"
-                          className={styles.logoCompact}
-                          onError={() => setLogoError(true)}
-                        />
-                      ) : (
-                        <div className={styles.logoFallbackCompact}>
-                          {companyName.toUpperCase()}
-                        </div>
-                      )}
-                      <div className={styles.companyInfoCompact}>
-                        <div className={styles.companyNameCompact}>{companyName}</div>
-                        <span className={styles.copyLabelCompact}>{copyLabel}</span>
-                      </div>
-                      <div className={styles.slipTitleCompact}>Salary Slip - {payslipMonth}</div>
-                    </div>
-
-                    {/* Meta details Compact */}
-                    <div className={styles.metaGridCompact}>
-                      {/* Col 1 */}
-                      <div className={styles.metaBlockCompact}>
-                        <div className={styles.blockTitleCompact}>Employee Details</div>
-                        <div className={styles.detailTable}>
-                          <div className={styles.detailRowCompact}>
-                            <span className={styles.detailLabel}>ID / Name:</span>
-                            <span className={styles.detailValue}>{employeeId || 'N/A'} - {employeeName || 'N/A'}</span>
-                          </div>
-                          <div className={styles.detailRowCompact}>
-                            <span className={styles.detailLabel}>CNIC:</span>
-                            <span className={styles.detailValue}>{cnic || 'N/A'}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Col 2 */}
-                      <div className={styles.metaBlockCompact}>
-                        <div className={styles.blockTitleCompact}>Job Details</div>
-                        <div className={styles.detailTable}>
-                          <div className={styles.detailRowCompact}>
-                            <span className={styles.detailLabel}>Designation:</span>
-                            <span className={styles.detailValue}>{designation || 'N/A'}</span>
-                          </div>
-                          <div className={styles.detailRowCompact}>
-                            <span className={styles.detailLabel}>Department:</span>
-                            <span className={styles.detailValue}>{department || 'N/A'}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Col 3 */}
-                      <div className={styles.metaBlockCompact}>
-                        <div className={styles.blockTitleCompact}>Period & Days</div>
-                        <div className={styles.detailTable}>
-                          <div className={styles.detailRowCompact}>
-                            <span className={styles.detailLabel}>From/To:</span>
-                            <span className={styles.detailValue}>{formatDate(periodFrom)} - {formatDate(periodTo)}</span>
-                          </div>
-                          <div className={styles.detailRowCompact}>
-                            <span className={styles.detailLabel}>Paid/LOP:</span>
-                            <span className={styles.detailValue}>{paidDays} / {lopDays} Days</span>
-                          </div>
-                          <div className={styles.detailRowCompact}>
-                            <span className={styles.detailLabel}>Pay Date:</span>
-                            <span className={styles.detailValue}>{formatDate(payDate) || 'N/A'}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Breakdown Compact */}
-                    <div className={styles.breakdownCompact}>
-                      <div className={styles.earningsCol}>
-                        <div className={styles.colHeaderCompact}>
-                          <span>Earnings</span>
-                          <span>Amount (Rs.)</span>
-                        </div>
-                        <div className={styles.colRowsCompact}>
-                          {earnings.map((earn) => (
-                            <div key={earn.id} className={styles.breakdownRowCompact}>
-                              <span className={styles.breakdownLabel}>{earn.label}</span>
-                              <span className={styles.breakdownValue}>
-                                {earn.amount.toLocaleString()}
-                              </span>
+          <div ref={containerRef} className={styles.previewSheetContainer} style={{ flexDirection: 'column', gap: '24px' }}>
+            {chunkArray(slips, 3).map((pageSlips, pageIdx) => {
+              const pageId = `payslip-page-${pageIdx}`;
+              return (
+                <div 
+                  key={pageIdx}
+                  className={styles.previewSheetWrapper}
+                  style={{
+                    width: `${794 * scale}px`,
+                    height: `${1123 * scale}px`,
+                    marginBottom: pageIdx < Math.ceil(slips.length / 3) - 1 ? `${24 * scale}px` : 0
+                  }}
+                >
+                  <div 
+                    id={pageId}
+                    data-payslip-page
+                    className={styles.previewSheet} 
+                    key={`${pageIdx}-${dummyCount}`}
+                    style={{
+                      transform: `scale(${scale})`,
+                      transformOrigin: 'top left',
+                    }}
+                  >
+                    {pageSlips.map((slip, index) => {
+                      const { totalEarnings, totalDeductions, netSalary } = getSlipSummary(slip);
+                      return (
+                        <div key={slip.id} className={styles.singleSlip}>
+                          {/* Header Compact */}
+                          <div className={styles.slipHeaderCompact}>
+                            {!logoError ? (
+                              <img
+                                src={logoImage}
+                                alt="Company Logo"
+                                className={styles.logoCompact}
+                                onError={() => setLogoError(true)}
+                              />
+                            ) : (
+                              <div className={styles.logoFallbackCompact}>
+                                {companyName.toUpperCase()}
+                              </div>
+                            )}
+                            <div className={styles.companyInfoCompact}>
+                              <div className={styles.companyNameCompact}>{companyName}</div>
                             </div>
-                          ))}
-                        </div>
-                      </div>
+                            <div className={styles.slipTitleCompact}>Salary Slip - {payslipMonth}</div>
+                          </div>
 
-                      <div>
-                        <div className={styles.colHeaderCompact}>
-                          <span>Deductions</span>
-                          <span>Amount (Rs.)</span>
-                        </div>
-                        <div className={styles.colRowsCompact}>
-                          {deductions.map((ded) => (
-                            <div key={ded.id} className={styles.breakdownRowCompact}>
-                              <span className={styles.breakdownLabel}>{ded.label}</span>
-                              <span className={styles.breakdownValue}>
-                                {ded.amount.toLocaleString()}
-                              </span>
+                          {/* Meta details Compact */}
+                          <div className={styles.metaGridCompact}>
+                            {/* Col 1 */}
+                            <div className={styles.metaBlockCompact}>
+                              <div className={styles.blockTitleCompact}>Employee Details</div>
+                              <div className={styles.detailTable}>
+                                <div className={styles.detailRowCompact}>
+                                  <span className={styles.detailLabel}>ID / Name:</span>
+                                  <span className={styles.detailValue}>{slip.employeeId || 'N/A'} - {slip.employeeName || 'N/A'}</span>
+                                </div>
+                                <div className={styles.detailRowCompact}>
+                                  <span className={styles.detailLabel}>CNIC:</span>
+                                  <span className={styles.detailValue}>{slip.cnic || 'N/A'}</span>
+                                </div>
+                              </div>
                             </div>
-                          ))}
+
+                            {/* Col 2 */}
+                            <div className={styles.metaBlockCompact}>
+                              <div className={styles.blockTitleCompact}>Job Details</div>
+                              <div className={styles.detailTable}>
+                                <div className={styles.detailRowCompact}>
+                                  <span className={styles.detailLabel}>Designation:</span>
+                                  <span className={styles.detailValue}>{slip.designation || 'N/A'}</span>
+                                </div>
+                                <div className={styles.detailRowCompact}>
+                                  <span className={styles.detailLabel}>Department:</span>
+                                  <span className={styles.detailValue}>{slip.department || 'N/A'}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Col 3 */}
+                            <div className={styles.metaBlockCompact}>
+                              <div className={styles.blockTitleCompact}>Period & Days</div>
+                              <div className={styles.detailTable}>
+                                <div className={styles.detailRowCompact}>
+                                  <span className={styles.detailLabel}>From/To:</span>
+                                  <span className={styles.detailValue}>{formatDate(slip.periodFrom)} - {formatDate(slip.periodTo)}</span>
+                                </div>
+                                <div className={styles.detailRowCompact}>
+                                  <span className={styles.detailLabel}>Paid/LOP:</span>
+                                  <span className={styles.detailValue}>{slip.paidDays} / {slip.lopDays} Days</span>
+                                </div>
+                                <div className={styles.detailRowCompact}>
+                                  <span className={styles.detailLabel}>Pay Date:</span>
+                                  <span className={styles.detailValue}>{formatDate(slip.payDate) || 'N/A'}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Breakdown Compact */}
+                          <div className={styles.breakdownCompact}>
+                            <div className={styles.earningsCol}>
+                              <div className={styles.colHeaderCompact}>
+                                <span>Earnings</span>
+                                <span>Amount (Rs.)</span>
+                              </div>
+                              <div className={styles.colRowsCompact}>
+                                {slip.earnings.map((earn) => (
+                                  <div key={earn.id} className={styles.breakdownRowCompact}>
+                                    <span className={styles.breakdownLabel}>{earn.label}</span>
+                                    <span className={styles.breakdownValue}>
+                                      {earn.amount.toLocaleString()}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div>
+                              <div className={styles.colHeaderCompact}>
+                                <span>Deductions</span>
+                                <span>Amount (Rs.)</span>
+                              </div>
+                              <div className={styles.colRowsCompact}>
+                                {slip.deductions.map((ded) => (
+                                  <div key={ded.id} className={styles.breakdownRowCompact}>
+                                    <span className={styles.breakdownLabel}>{ded.label}</span>
+                                    <span className={styles.breakdownValue}>
+                                      {ded.amount.toLocaleString()}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Summary Compact */}
+                          <div className={styles.summaryRowCompact}>
+                            <div className={styles.summaryColCompact}>
+                              <span>Total Earnings:</span>
+                              <span>Rs. {totalEarnings.toLocaleString()}</span>
+                            </div>
+                            <div className={styles.summaryColCompact}>
+                              <span>Total Deductions:</span>
+                              <span>Rs. {totalDeductions.toLocaleString()}</span>
+                            </div>
+                          </div>
+
+                          {/* Net Salary Banner Compact */}
+                          <div className={styles.netSalaryBannerCompact}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '75%' }}>
+                              <span className={styles.netLabelCompact}>Net Salary Paid (in words):</span>
+                              <span className={styles.netWordsCompact}>{numberToWords(netSalary)}</span>
+                            </div>
+                            <div className={styles.netValueCompact}>
+                              Rs. {netSalary.toLocaleString()}
+                            </div>
+                          </div>
+
+                          {/* Signatures Compact */}
+                          <div className={styles.signatureSectionCompact}>
+                            <div className={styles.sigBlockCompact}>
+                              <div className={styles.sigLineCompact} />
+                              <span className={styles.sigLabelCompact}>Employee Signature</span>
+                            </div>
+                            <div className={styles.sigBlockCompact}>
+                              <div className={styles.sigLineCompact} />
+                              <span className={styles.sigLabelCompact}>Authorized Stamp & Sign</span>
+                            </div>
+                          </div>
+
+                          {/* Cut Line */}
+                          {index < pageSlips.length - 1 && <div className={styles.cutLine} />}
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Summary Compact */}
-                    <div className={styles.summaryRowCompact}>
-                      <div className={styles.summaryColCompact}>
-                        <span>Total Earnings:</span>
-                        <span>Rs. {totalEarnings.toLocaleString()}</span>
-                      </div>
-                      <div className={styles.summaryColCompact}>
-                        <span>Total Deductions:</span>
-                        <span>Rs. {totalDeductions.toLocaleString()}</span>
-                      </div>
-                    </div>
-
-                    {/* Net Salary Banner Compact */}
-                    <div className={styles.netSalaryBannerCompact}>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '75%' }}>
-                        <span className={styles.netLabelCompact}>Net Salary Paid (in words):</span>
-                        <span className={styles.netWordsCompact}>{numberToWords(netSalary)}</span>
-                      </div>
-                      <div className={styles.netValueCompact}>
-                        Rs. {netSalary.toLocaleString()}
-                      </div>
-                    </div>
-
-                    {/* Signatures Compact */}
-                    <div className={styles.signatureSectionCompact}>
-                      <div className={styles.sigBlockCompact}>
-                        <div className={styles.sigLineCompact} />
-                        <span className={styles.sigLabelCompact}>Employee Signature</span>
-                      </div>
-                      <div className={styles.sigBlockCompact}>
-                        <div className={styles.sigLineCompact} />
-                        <span className={styles.sigLabelCompact}>Authorized Stamp & Sign</span>
-                      </div>
-                    </div>
-
-                    {/* Cut Line */}
-                    {index < 2 && <div className={styles.cutLine} />}
+                      );
+                    })}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

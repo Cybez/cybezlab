@@ -575,7 +575,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #091124;
+  border-bottom: 2px solid #000000;
   padding-bottom: 6px;
   margin-bottom: 6px;
 }
@@ -589,7 +589,7 @@
 .logoFallbackCompact {
   font-size: 1.1rem;
   font-weight: 900;
-  color: #091124;
+  color: #000000;
   letter-spacing: -0.04em;
 }
 
@@ -603,13 +603,13 @@
 .companyNameCompact {
   font-size: 0.95rem;
   font-weight: 900;
-  color: #091124;
+  color: #000000;
 }
 
 .copyLabelCompact {
   font-size: 0.65rem;
   font-weight: 800;
-  color: var(--primary);
+  color: #000000;
   text-transform: uppercase;
   margin-top: 1px;
   letter-spacing: 0.05em;
@@ -618,7 +618,7 @@
 .slipTitleCompact {
   font-size: 0.85rem;
   font-weight: 800;
-  color: #091124;
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -640,7 +640,7 @@
 .blockTitleCompact {
   font-size: 0.65rem;
   font-weight: 800;
-  color: #475569;
+  color: #334155;
   text-transform: uppercase;
   border-bottom: 1px solid #e2e8f0;
   padding-bottom: 3px;
@@ -663,7 +663,7 @@
 .breakdownCompact {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border: 1px solid #091124;
+  border: 1px solid #000000;
   border-radius: 4px;
   margin-bottom: 6px;
   min-height: 100px;
@@ -671,7 +671,7 @@
 }
 
 .colHeaderCompact {
-  background-color: #091124;
+  background-color: #0f172a;
   color: #ffffff;
   padding: 4px 10px;
   font-size: 0.68rem;
@@ -704,8 +704,8 @@
 .summaryRowCompact {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  border-top: 1px solid #091124;
-  border-bottom: 1px solid #091124;
+  border-top: 1px solid #000000;
+  border-bottom: 1px solid #000000;
   background-color: #f8fafc;
 }
 
@@ -715,15 +715,15 @@
   justify-content: space-between;
   font-size: 0.72rem;
   font-weight: 800;
-  color: #091124;
+  color: #000000;
 }
 
 .summaryColCompact:first-child {
-  border-right: 1px solid #091124;
+  border-right: 1px solid #000000;
 }
 
 .netSalaryBannerCompact {
-  background-color: #091124;
+  background-color: #0f172a;
   color: #ffffff;
   padding: 6px 12px;
   border-radius: 4px;
@@ -737,7 +737,7 @@
   font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--secondary);
+  color: #cbd5e1;
 }
 
 .netWordsCompact {
@@ -778,23 +778,88 @@
 }
 
 .cutLine {
-  border-bottom: 2px dashed #94a3b8;
-  margin: 6px 0;
-  position: relative;
-  height: 2px;
+  border-bottom: 1px dotted #94a3b8;
+  margin: 8px 0;
+  height: 1px;
 }
 
-.cutLine::before {
-  content: "✂ Cut Here";
-  position: absolute;
-  top: -8px;
-  left: 24px;
-  background-color: #ffffff;
-  padding: 0 8px;
-  font-size: 0.65rem;
-  color: #64748b;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+/* Tabs for managing multiple slips */
+.tabsWrapper {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tabsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tabButton {
+  background-color: var(--bg-section);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tabButton:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.activeTab {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff !important;
+}
+
+.tabActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.addSlipBtn {
+  background-color: rgba(0, 102, 255, 0.08);
+  border: 1px dashed var(--primary);
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.addSlipBtn:hover {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.deleteSlipBtn {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ef4444;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteSlipBtn:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
 }
 
