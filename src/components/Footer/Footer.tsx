@@ -76,6 +76,7 @@ export const Footer: React.FC = () => {
               <li><Link href="/#about" className={styles.link}>About Us</Link></li>
               <li><Link href="/work" className={styles.link}>Our Work</Link></li>
               <li><Link href="/careers" className={styles.link}>Careers</Link></li>
+              <li><Link href="/salary-slip" className={styles.link}>Salary Slip Generator</Link></li>
               <li><Link href="/#contact" className={styles.link}>Contact</Link></li>
             </ul>
           </div>
