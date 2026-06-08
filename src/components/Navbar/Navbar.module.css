@@ -52,9 +52,13 @@
   transition: color 0.2s ease;
   position: relative;
   padding: 8px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.link:hover {
+.link:hover,
+.linkActive {
   color: var(--primary);
 }
 
@@ -71,14 +75,228 @@
   transition: transform 0.25s ease;
 }
 
-.link:hover::after {
+.link:hover::after,
+.linkActive::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevronRotate {
+  transform: rotate(180deg);
 }
 
 .cta {
   display: flex;
   align-items: center;
+}
+
+/* Mega Menu Container */
+.megaMenuWrapper {
+  /* No relative positioning here so that .megaMenu spans the full width of .navbar */
+}
+
+.megaMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 16px 32px -16px rgba(9, 17, 36, 0.15);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: -1;
+  padding: 40px 0;
+}
+
+.megaVisible {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.megaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.megaColumns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) 1.2fr;
+  gap: 24px;
+}
+
+.megaColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.columnTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent); /* Elegant Indigo/Purple for section title */
+  text-transform: capitalize;
+  letter-spacing: -0.01em;
+}
+
+.columnList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.columnLink {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+.columnLink:hover {
+  color: var(--primary);
+  transform: translateX(2px);
+}
+
+/* Testimonial Card in Mega Menu */
+.megaTestimonial {
+  display: flex;
+  align-items: flex-start;
+}
+
+.testimonialCard {
+  background-color: rgba(99, 102, 241, 0.06); /* Light Lavender Box as in mockup */
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.testimonialHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.authorName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--fg-color);
+}
+
+.clientTag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #15803d; /* Green Client Tag */
+  background-color: #dcfce7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.testimonialText {
+  font-size: 0.85rem;
+  color: var(--fg-color);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Bottom Technologies Section */
+.megaTech {
+  border-top: 1px solid var(--border-color);
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.techTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--fg-color);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.techGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.techBadge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+
+/* Custom Styled Badges with Brand-related Colors */
+.techAndroid { background-color: #f2fbf4; color: #16a34a; border-color: #bbf7d0; }
+.techAws { background-color: #fff9f2; color: #ea580c; border-color: #fed7aa; }
+.techAngular { background-color: #fef2f2; color: #dc2626; border-color: #fecaca; }
+.techDocker { background-color: #f0fdfa; color: #0891b2; border-color: #ccfbf1; }
+.techFigma { background-color: #faf5ff; color: #9333ea; border-color: #e9d5ff; }
+.techFirebase { background-color: #fffbeb; color: #d97706; border-color: #fef3c7; }
+.techFlutter { background-color: #f0f9ff; color: #0284c7; border-color: #e0f2fe; }
+.techJava { background-color: #fdf2f8; color: #db2777; border-color: #fbcfe8; }
+.techReact { background-color: #ecfeff; color: #0891b2; border-color: #cffafe; }
+.techNode { background-color: #f4fcf6; color: #16a34a; border-color: #dcfce7; }
+.techPython { background-color: #fefcbf; color: #718096; border-color: #faf089; }
+.techSwift { background-color: #fff5f5; color: #e53e3e; border-color: #fed7d7; }
+.techTs { background-color: #ebf8ff; color: #2b6cb0; border-color: #bee3f8; }
+.techVue { background-color: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+.techWp { background-color: #ebf8ff; color: #2b6cb0; border-color: #c4e3f8; }
+
+@media (max-width: 992px) {
+  .megaColumns {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+  .megaTestimonial {
+    grid-column: span 2;
+  }
 }
 
 @media (max-width: 768px) {
