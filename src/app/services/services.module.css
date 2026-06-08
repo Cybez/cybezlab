@@ -91,13 +91,13 @@
 }
 
 .teamCard1 {
-  background-image: url('/assets/service_bg_1.png');
+  background-image: url('../../../public/assets/service_bg_1.png');
 }
 .teamCard2 {
-  background-image: url('/assets/service_bg_2.png');
+  background-image: url('../../../public/assets/service_bg_2.png');
 }
 .teamCard3 {
-  background-image: url('/assets/service_bg_3.png');
+  background-image: url('../../../public/assets/service_bg_3.png');
 }
 
 /* Intro Text */
