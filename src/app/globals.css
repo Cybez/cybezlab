@@ -83,7 +83,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../../public/assets/texture_bg.png');
+  background-image: url('/assets/texture_bg.png');
   background-size: 320px 320px;
   background-repeat: repeat;
   opacity: 0.035;

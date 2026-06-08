@@ -1,7 +1,6 @@
 .workPage {
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-color);
   padding-bottom: 120px;
 }
 
