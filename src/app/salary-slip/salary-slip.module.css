@@ -884,3 +884,113 @@
   border-color: #ef4444;
 }
 
+/* ── Print Button ─────────────────────────────────────────────────────────── */
+.printBtn {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+}
+
+.printBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.45);
+}
+
+.printBtn:active {
+  transform: translateY(0);
+}
+
+/* ── Print Media ──────────────────────────────────────────────────────────── */
+@media print {
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the print area and its children */
+  #salary-print-area,
+  #salary-print-area * {
+    visibility: visible;
+  }
+
+  /* Position print area flush to top-left */
+  #salary-print-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block !important;
+  }
+
+  /* Each A4 page wrapper — break after each */
+  .printPage {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 0;
+    page-break-after: always;
+    break-after: page;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The inner container at exact A4 dimensions */
+  .printPageInner {
+    width: 210mm;
+    height: 297mm;
+    padding: 8mm 10mm;
+    box-sizing: border-box;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  /* Each individual slip takes 1/3 of A4 height */
+  .singleSlip {
+    height: calc((297mm - 16mm) / 3) !important;
+    overflow: hidden !important;
+  }
+
+  /* Cut line for print */
+  .cutLine {
+    border-bottom: 1px dashed #64748b !important;
+    margin: 1.5mm 0 !important;
+  }
+
+  /* Force print colors for dark backgrounds */
+  .colHeaderCompact,
+  .netSalaryBannerCompact {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Remove on-screen box shadows / borders from preview container */
+  .previewSheet {
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+}
+
+

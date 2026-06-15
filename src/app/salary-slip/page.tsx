@@ -27,6 +27,50 @@ interface SlipData {
   deductions: BreakupItem[];
 }
 
+// Helper to generate a slip for Muhammad Moeen (defined outside component to avoid re-creation on render)
+// Salary structure:
+//   Intern     (Sep–Nov 2023):  Basic 20,000 | Party Fund 1,200
+//   Probation  (Dec 2023–Feb 2024): Basic 25,000 | Party Fund 1,200
+//   Regular    (Mar–Aug 2024):  Basic 45,000 | Party Fund 1,200
+//   After 1yr  (Sep 2024+):    Basic 60,000 | Party Fund 2,500
+const makeMoeenSlip = (
+  id: string,
+  year: number,
+  month: number, // 1-indexed
+  designation: string,
+  basicPay: number,
+  partyFund: number,
+): SlipData => {
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const mm = String(month).padStart(2, '0');
+  // Proportional allowances based on basic pay
+  const hra        = Math.round(basicPay * 0.25);
+  const medical    = Math.round(basicPay * 0.10);
+  const conveyance = basicPay <= 20000 ? 1500 : basicPay <= 25000 ? 2000 : 2500;
+  return {
+    id,
+    employeeName: 'Muhammad Moeen',
+    employeeId: '188',
+    cnic: '38401-5301044-9',
+    designation,
+    department: 'SQA',
+    periodFrom: `01/${mm}/${year}`,
+    periodTo: `${daysInMonth}/${mm}/${year}`,
+    payDate: `${daysInMonth}/${mm}/${year}`,
+    paidDays: daysInMonth,
+    lopDays: 0,
+    earnings: [
+      { id: '1', label: 'Basic Pay',            amount: basicPay   },
+      { id: '2', label: 'House Rent Allowance', amount: hra        },
+      { id: '3', label: 'Medical Allowance',    amount: medical    },
+      { id: '4', label: 'Conveyance Allowance', amount: conveyance },
+    ],
+    deductions: [
+      { id: '1', label: 'Party Fund', amount: partyFund },
+    ],
+  };
+};
+
 export default function SalarySlipGenerator() {
   const [mounted, setMounted] = useState(false);
   
@@ -36,59 +80,50 @@ export default function SalarySlipGenerator() {
 
   // Shared company details state
   const [companyName, setCompanyName] = useState('CybezLab');
-  const [payslipMonth, setPayslipMonth] = useState('September 2026');
+  const [payslipMonth, setPayslipMonth] = useState('September 2023');
   const [addressLine1, setAddressLine1] = useState('Suite 305, 3rd Floor, Business Avenue Building, Main Shahrah-e-Faisal, PECHS Block 6');
   const [addressLine2, setAddressLine2] = useState('Karachi, Pakistan');
   const [logoImage, setLogoImage] = useState('/assets/cybezlab-logo.png');
   const [logoFileName, setLogoFileName] = useState('cybezlab-logo.png');
   const [logoError, setLogoError] = useState(false);
 
-  // Slips list state
+  // 27 pre-populated salary slips for Muhammad Moeen
+  // Phase 1 — QA Intern       (Sep 2023 – Nov 2023):  Basic 20,000 | PF 1,200
+  // Phase 2 — Probation/Assoc (Dec 2023 – Feb 2024):  Basic 25,000 | PF 1,200
+  // Phase 3 — Junior QA Engr  (Mar 2024 – Aug 2024):  Basic 45,000 | PF 1,200
+  // Phase 4 — Junior QA Engr+ (Sep 2024 – Nov 2025):  Basic 60,000 | PF 2,500
   const [slips, setSlips] = useState<SlipData[]>([
-    {
-      id: '1',
-      employeeName: 'Muhammad Mooen',
-      employeeId: '188',
-      cnic: '38401-5301044-9',
-      designation: 'Internship',
-      department: 'SQA',
-      periodFrom: '01/09/2026',
-      periodTo: '30/09/2026',
-      payDate: '30/09/2026',
-      paidDays: 30,
-      lopDays: 0,
-      earnings: [
-        { id: '1', label: 'Basic Pay', amount: 20000 },
-        { id: '2', label: 'House Rent Allowance', amount: 5000 },
-        { id: '3', label: 'Medical Allowance', amount: 2000 },
-      ],
-      deductions: [
-        { id: '1', label: 'Party Fund', amount: 1200 },
-        { id: '2', label: 'Income Tax', amount: 500 },
-      ],
-    },
-    {
-      id: '2',
-      employeeName: 'Sarah Khan',
-      employeeId: '189',
-      cnic: '42101-1234567-8',
-      designation: 'Software Engineer',
-      department: 'Engineering',
-      periodFrom: '01/09/2026',
-      periodTo: '30/09/2026',
-      payDate: '30/09/2026',
-      paidDays: 30,
-      lopDays: 0,
-      earnings: [
-        { id: '1', label: 'Basic Pay', amount: 50000 },
-        { id: '2', label: 'House Rent Allowance', amount: 15000 },
-        { id: '3', label: 'Medical Allowance', amount: 5000 },
-      ],
-      deductions: [
-        { id: '1', label: 'Professional Tax', amount: 200 },
-        { id: '2', label: 'Income Tax', amount: 1500 },
-      ],
-    }
+    // ── Phase 1: Internship (3 months) ───────────────────────────────────
+    makeMoeenSlip('1',  2023,  9, 'QA Intern',             20000, 1200),
+    makeMoeenSlip('2',  2023, 10, 'QA Intern',             20000, 1200),
+    makeMoeenSlip('3',  2023, 11, 'QA Intern',             20000, 1200),
+    // ── Phase 2: Probation (3 months) ────────────────────────────────────
+    makeMoeenSlip('4',  2023, 12, 'Associate QA Engineer', 25000, 1200),
+    makeMoeenSlip('5',  2024,  1, 'Associate QA Engineer', 25000, 1200),
+    makeMoeenSlip('6',  2024,  2, 'Associate QA Engineer', 25000, 1200),
+    // ── Phase 3: Regular Employee (6 months) ─────────────────────────────
+    makeMoeenSlip('7',  2024,  3, 'Junior QA Engineer',    45000, 1200),
+    makeMoeenSlip('8',  2024,  4, 'Junior QA Engineer',    45000, 1200),
+    makeMoeenSlip('9',  2024,  5, 'Junior QA Engineer',    45000, 1200),
+    makeMoeenSlip('10', 2024,  6, 'Junior QA Engineer',    45000, 1200),
+    makeMoeenSlip('11', 2024,  7, 'Junior QA Engineer',    45000, 1200),
+    makeMoeenSlip('12', 2024,  8, 'Junior QA Engineer',    45000, 1200),
+    // ── Phase 4: After 1 Year from Joining (15 months) ───────────────────
+    makeMoeenSlip('13', 2024,  9, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('14', 2024, 10, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('15', 2024, 11, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('16', 2024, 12, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('17', 2025,  1, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('18', 2025,  2, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('19', 2025,  3, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('20', 2025,  4, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('21', 2025,  5, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('22', 2025,  6, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('23', 2025,  7, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('24', 2025,  8, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('25', 2025,  9, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('26', 2025, 10, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('27', 2025, 11, 'Junior QA Engineer',    60000, 2500),
   ]);
   const [activeSlipIndex, setActiveSlipIndex] = useState(0);
 
@@ -831,6 +866,18 @@ export default function SalarySlipGenerator() {
               <Button variant="secondary" onClick={handleRefreshPreview}>
                 Refresh Preview
               </Button>
+              <button
+                type="button"
+                className={styles.printBtn}
+                onClick={() => window.print()}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="6 9 6 2 18 2 18 9" />
+                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                  <rect x="6" y="14" width="12" height="8" />
+                </svg>
+                Print All 27 Slips
+              </button>
               <Button onClick={handleDownloadPDF}>
                 Download All Slips (PDF)
               </Button>
@@ -1031,6 +1078,169 @@ export default function SalarySlipGenerator() {
           </div>
         </div>
       </div>
+
+      {/* ── Hidden print-only area ───────────────────────────────────────────
+           This div is invisible on screen but targeted by @media print.
+           It renders all 9 A4 pages at full 210mm×297mm, no scaling. */}
+      <div
+        id="salary-print-area"
+        style={{
+          position: 'absolute',
+          top: '-9999px',
+          left: '-9999px',
+          visibility: 'hidden',
+          width: '210mm',
+        }}
+      >
+        {chunkArray(slips, 3).map((pageSlips, pageIdx) => (
+          <div key={pageIdx} className={styles.printPage}>
+            <div className={styles.printPageInner}>
+              {pageSlips.map((slip, index) => {
+                const { totalEarnings, totalDeductions, netSalary } = getSlipSummary(slip);
+                return (
+                  <div key={slip.id} className={styles.singleSlip}>
+                    {/* Header */}
+                    <div className={styles.slipHeaderCompact}>
+                      <div className={styles.slipHeaderTop}>
+                        {!logoError ? (
+                          <img
+                            src={logoImage}
+                            alt="Company Logo"
+                            className={styles.logoCompact}
+                            onError={() => setLogoError(true)}
+                          />
+                        ) : (
+                          <div className={styles.logoFallbackCompact}>
+                            {companyName.toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Meta details */}
+                    <div className={styles.metaGridCompact}>
+                      <div className={styles.metaBlockCompact}>
+                        <div className={styles.blockTitleCompact}>Employee Details</div>
+                        <div className={styles.detailTable}>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>ID / Name:</span>
+                            <span className={styles.detailValue}>{slip.employeeId} - {slip.employeeName}</span>
+                          </div>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>CNIC:</span>
+                            <span className={styles.detailValue}>{slip.cnic}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.metaBlockCompact}>
+                        <div className={styles.blockTitleCompact}>Job Details</div>
+                        <div className={styles.detailTable}>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Designation:</span>
+                            <span className={styles.detailValue}>{slip.designation}</span>
+                          </div>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Department:</span>
+                            <span className={styles.detailValue}>{slip.department}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.metaBlockCompact}>
+                        <div className={styles.blockTitleCompact}>Period & Days</div>
+                        <div className={styles.detailTable}>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>From/To:</span>
+                            <span className={styles.detailValue}>{formatDate(slip.periodFrom)} - {formatDate(slip.periodTo)}</span>
+                          </div>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Paid/LOP:</span>
+                            <span className={styles.detailValue}>{slip.paidDays} / {slip.lopDays} Days</span>
+                          </div>
+                          <div className={styles.detailRowCompact}>
+                            <span className={styles.detailLabel}>Pay Date:</span>
+                            <span className={styles.detailValue}>{formatDate(slip.payDate)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Earnings & Deductions */}
+                    <div className={styles.breakdownCompact}>
+                      <div className={styles.earningsCol}>
+                        <div className={styles.colHeaderCompact}>
+                          <span>Earnings</span>
+                          <span>Amount (Rs.)</span>
+                        </div>
+                        <div className={styles.colRowsCompact}>
+                          {slip.earnings.map((earn) => (
+                            <div key={earn.id} className={styles.breakdownRowCompact}>
+                              <span className={styles.breakdownLabel}>{earn.label}</span>
+                              <span className={styles.breakdownValue}>{earn.amount.toLocaleString()}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <div className={styles.colHeaderCompact}>
+                          <span>Deductions</span>
+                          <span>Amount (Rs.)</span>
+                        </div>
+                        <div className={styles.colRowsCompact}>
+                          {slip.deductions.map((ded) => (
+                            <div key={ded.id} className={styles.breakdownRowCompact}>
+                              <span className={styles.breakdownLabel}>{ded.label}</span>
+                              <span className={styles.breakdownValue}>{ded.amount.toLocaleString()}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Summary */}
+                    <div className={styles.summaryRowCompact}>
+                      <div className={styles.summaryColCompact}>
+                        <span>Total Earnings:</span>
+                        <span>Rs. {totalEarnings.toLocaleString()}</span>
+                      </div>
+                      <div className={styles.summaryColCompact}>
+                        <span>Total Deductions:</span>
+                        <span>Rs. {totalDeductions.toLocaleString()}</span>
+                      </div>
+                    </div>
+
+                    {/* Net Salary */}
+                    <div className={styles.netSalaryBannerCompact}>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', maxWidth: '75%' }}>
+                        <span className={styles.netLabelCompact}>Net Salary Paid (in words):</span>
+                        <span className={styles.netWordsCompact}>{numberToWords(netSalary)}</span>
+                      </div>
+                      <div className={styles.netValueCompact}>
+                        Rs. {netSalary.toLocaleString()}
+                      </div>
+                    </div>
+
+                    {/* Signatures */}
+                    <div className={styles.signatureSectionCompact}>
+                      <div className={styles.sigBlockCompact}>
+                        <div className={styles.sigLineCompact} />
+                        <span className={styles.sigLabelCompact}>Employee Signature</span>
+                      </div>
+                      <div className={styles.sigBlockCompact}>
+                        <div className={styles.sigLineCompact} />
+                        <span className={styles.sigLabelCompact}>Authorized Stamp & Sign</span>
+                      </div>
+                    </div>
+
+                    {/* Cut Line */}
+                    {index < pageSlips.length - 1 && <div className={styles.cutLine} />}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
     </main>
   );
 }
