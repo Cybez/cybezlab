@@ -84,7 +84,7 @@ export default function SalarySlipGenerator() {
   // Phase 1 — QA Intern       (Sep 2023 – Nov 2023):  Basic 20,000 | PF 1,200
   // Phase 2 — Probation/Assoc (Dec 2023 – Feb 2024):  Basic 25,000 | PF 1,200
   // Phase 3 — Junior QA Engr  (Mar 2024 – Aug 2024):  Basic 45,000 | PF 1,200
-  // Phase 4 — Junior QA Engr+ (Sep 2024 – Nov 2025):  Basic 60,000 | PF 2,500
+  // Phase 4 — Junior QA Engr+ (Sep 2024 – Jan 2026):  Basic 60,000 | PF 2,500
   const [slips, setSlips] = useState<SlipData[]>([
     // ── Phase 1: Internship (3 months) ───────────────────────────────────
     makeMoeenSlip('1',  2023,  9, 'QA Intern',             20000, 1200),
@@ -101,7 +101,7 @@ export default function SalarySlipGenerator() {
     makeMoeenSlip('10', 2024,  6, 'Junior QA Engineer',    45000, 1200),
     makeMoeenSlip('11', 2024,  7, 'Junior QA Engineer',    45000, 1200),
     makeMoeenSlip('12', 2024,  8, 'Junior QA Engineer',    45000, 1200),
-    // ── Phase 4: After 1 Year from Joining (15 months) ───────────────────
+    // ── Phase 4: After 1 Year from Joining (17 months, till 20 Jan 2026) ────
     makeMoeenSlip('13', 2024,  9, 'Junior QA Engineer',    60000, 2500),
     makeMoeenSlip('14', 2024, 10, 'Junior QA Engineer',    60000, 2500),
     makeMoeenSlip('15', 2024, 11, 'Junior QA Engineer',    60000, 2500),
@@ -117,6 +117,27 @@ export default function SalarySlipGenerator() {
     makeMoeenSlip('25', 2025,  9, 'Junior QA Engineer',    60000, 2500),
     makeMoeenSlip('26', 2025, 10, 'Junior QA Engineer',    60000, 2500),
     makeMoeenSlip('27', 2025, 11, 'Junior QA Engineer',    60000, 2500),
+    makeMoeenSlip('28', 2025, 12, 'Junior QA Engineer',    60000, 2500),
+    // Slip 29 — Jan 2026 (01–20 Jan, last working day before exit on 20-Jan-2026)
+    {
+      id: '29',
+      employeeName: 'Muhammad Moeen',
+      employeeId: '188',
+      cnic: '38401-5301044-9',
+      designation: 'Junior QA Engineer',
+      department: 'SQA',
+      periodFrom: '01/01/2026',
+      periodTo: '20/01/2026',
+      payDate: '20/01/2026',
+      paidDays: 20,
+      lopDays: 0,
+      earnings: [
+        { id: '1', label: 'Basic Pay', amount: 60000 },
+      ],
+      deductions: [
+        { id: '1', label: 'Party Fund', amount: 2500 },
+      ],
+    },
   ]);
   const [activeSlipIndex, setActiveSlipIndex] = useState(0);
 
@@ -869,7 +890,7 @@ export default function SalarySlipGenerator() {
                   <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
                   <rect x="6" y="14" width="12" height="8" />
                 </svg>
-                Print All 27 Slips
+                Print All 29 Slips
               </button>
               <Button onClick={handleDownloadPDF}>
                 Download All Slips (PDF)
