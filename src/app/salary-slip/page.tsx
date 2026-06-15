@@ -43,10 +43,6 @@ const makeMoeenSlip = (
 ): SlipData => {
   const daysInMonth = new Date(year, month, 0).getDate();
   const mm = String(month).padStart(2, '0');
-  // Proportional allowances based on basic pay
-  const hra        = Math.round(basicPay * 0.25);
-  const medical    = Math.round(basicPay * 0.10);
-  const conveyance = basicPay <= 20000 ? 1500 : basicPay <= 25000 ? 2000 : 2500;
   return {
     id,
     employeeName: 'Muhammad Moeen',
@@ -60,10 +56,7 @@ const makeMoeenSlip = (
     paidDays: daysInMonth,
     lopDays: 0,
     earnings: [
-      { id: '1', label: 'Basic Pay',            amount: basicPay   },
-      { id: '2', label: 'House Rent Allowance', amount: hra        },
-      { id: '3', label: 'Medical Allowance',    amount: medical    },
-      { id: '4', label: 'Conveyance Allowance', amount: conveyance },
+      { id: '1', label: 'Basic Pay', amount: basicPay },
     ],
     deductions: [
       { id: '1', label: 'Party Fund', amount: partyFund },
